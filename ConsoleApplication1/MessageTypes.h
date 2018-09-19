@@ -16,23 +16,23 @@ inline std::string MsgToStr(int msg)
 {
 	switch (msg)
 	{
-	case 1:
+	case 0:
 
 		return "HiHoneyImHome";
 
-	case 2:
+	case 1:
 
 		return "StewReady";
 
-	case 3:
+	case 2:
 
 		return "WhosAGoodBoy";
 
-	case 4:
+	case 3:
 
 		return "ImAGoodBoy";
 
-	case 5:
+	case 4:
 
 		return "GetThatBone";
 

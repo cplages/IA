@@ -15,6 +15,9 @@
 //above this value a doggo is sleepy
 const int DoggoTirednessThreshold = 3;
 
+/* New agent Doggo interacting with the Miner. 
+Depending on the value of m_iFatigue, Doggo plays in farm or rests at home */
+
 class Doggo : public BaseGameEntity
 {
   private:
@@ -27,19 +30,16 @@ class Doggo : public BaseGameEntity
 	int m_iFatigue;
 
   public:
-	  Doggo(int id);
+	 Doggo(int id);
 
 	~Doggo() { delete m_pStateMachine; }
 
-	//this must be implemented
 	void Update();
 
-	//so must this
 	virtual bool HandleMessage(const Telegram &msg);
 
 	StateMachine<Doggo> *GetFSM() const { return m_pStateMachine; }
 
-	//-------------------------------------------------------------accessors
 	location_type Location() const { return m_Location; }
 	void ChangeLocation(location_type loc) { m_Location = loc; }
 

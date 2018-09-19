@@ -30,6 +30,7 @@ int main()
   //create his wife
   MinersWife* Elsa = new MinersWife(ent_Elsa);
 
+  //create his dog
   Doggo* Rantanplan = new Doggo(ent_Doggo);
 
   //register them with the entity manager
@@ -37,7 +38,7 @@ int main()
   EntityMgr->RegisterEntity(Elsa);
   EntityMgr->RegisterEntity(Rantanplan);
 
-  //run Bob and Elsa through a few Update calls
+  //run Bob, Elsa and Rantanplan through a few Update calls
   for (int i=0; i<30; ++i)
   { 
     Bob->Update();

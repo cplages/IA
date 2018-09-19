@@ -1,11 +1,12 @@
 #include "stdafx.h"
 #include "Doggo.h"
 
+// Constructor
 Doggo::Doggo(int id) : m_Location(shack), m_iFatigue(0), BaseGameEntity(id)
 {
 	//set up state machine
 	m_pStateMachine = new StateMachine<Doggo>(this);
-
+	//at first the dog rests
 	m_pStateMachine->SetCurrentState(GoHomeAndRest::Instance());
 
 	m_pStateMachine->SetGlobalState(DoggosGlobalState::Instance());

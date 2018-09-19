@@ -164,6 +164,11 @@ public:
 };
 
 
+//------------------------------------------------------------------------
+// In the case of Doggo and the miner are at home, if the miner receive 
+// the msg "I am a good boy", he pats the dog.
+//------------------------------------------------------------------------
+
 class PatDoggo : public State<Miner>
 {
 private:

@@ -6,8 +6,7 @@
 class Doggo;
 
 //------------------------------------------------------------------------
-//
-
+// Global state in case of futures implementations 
 //------------------------------------------------------------------------
 class DoggosGlobalState : public State<Doggo>
 {
@@ -32,8 +31,8 @@ class DoggosGlobalState : public State<Doggo>
 };
 
 //------------------------------------------------------------------------
-//
-
+// The dog is going to play in the farm when is rested. 
+// After a moment, the dog will be tired and go back to the home to rest.
 //------------------------------------------------------------------------
 class PlayInFarm : public State<Doggo>
 {
@@ -58,8 +57,7 @@ class PlayInFarm : public State<Doggo>
 };
 
 //------------------------------------------------------------------------
-//
-
+// If the miner gives a bone to the dog, Doggo eats the bone remains.
 //------------------------------------------------------------------------
 class EatRemains : public State<Doggo>
 {
@@ -84,8 +82,8 @@ class EatRemains : public State<Doggo>
 };
 
 //------------------------------------------------------------------------
-//
-
+// When the dog is tired, it rests at home for a while. It can interact
+// with the miner : getting patted or eating a bone. 
 //------------------------------------------------------------------------
 class GoHomeAndRest : public State<Doggo>
 {
@@ -110,8 +108,8 @@ class GoHomeAndRest : public State<Doggo>
 };
 
 //------------------------------------------------------------------------
-//
-
+// At home, by sending a message "I am a good boy" to the miner, Doggo
+// get patted.
 //------------------------------------------------------------------------
 class GetPattedByOwner : public State<Doggo>
 {
