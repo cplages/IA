@@ -126,7 +126,7 @@ void GoHomeAndRest::Enter(Doggo *dog)
 
 void GoHomeAndRest::Execute(Doggo *dog)
 {
-	//if doggo is not fatigued go play in the farm again again.
+	//if doggo is not fatigued go play in the farm again.
 	if (dog->IsRested())
 	{
 		cout << "\n"

@@ -8,7 +8,7 @@ Doggo::Doggo(int id) : m_Location(shack), m_iFatigue(0), BaseGameEntity(id)
 	m_pStateMachine = new StateMachine<Doggo>(this);
 	//at first the dog rests
 	m_pStateMachine->SetCurrentState(GoHomeAndRest::Instance());
-
+	// global state is defined but unused
 	m_pStateMachine->SetGlobalState(DoggosGlobalState::Instance());
 }
 
@@ -37,7 +37,7 @@ bool Doggo::Fatigued() const
 
 bool Doggo::IsRested() const
 {
-	if (m_iFatigue == 0 )
+	if (m_iFatigue == 0)
 	{
 		return true;
 	}
