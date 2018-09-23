@@ -65,6 +65,7 @@ private:
     hide               = 0x04000,
     flock              = 0x08000,
     offset_pursuit     = 0x10000,
+	separation_offset  = 0x20000,
   };
 
 private:
@@ -230,6 +231,8 @@ private:
   
   Vector2D Separation(const std::vector<Vehicle*> &agents);
 
+  Vector2D SeparationOffset(const std::vector<Vehicle*> &agents);
+
   Vector2D Alignment(const std::vector<Vehicle*> &agents);
 
   //the following three are the same as above but they use cell-space
@@ -310,6 +313,7 @@ public:
   void EvadeOn(Vehicle* v){m_iFlags |= evade; m_pTargetAgent1 = v;}
   void CohesionOn(){m_iFlags |= cohesion;}
   void SeparationOn(){m_iFlags |= separation;}
+  void SeparationOffsetOn(const Vector2D offset) { m_iFlags |= separation_offset; m_vOffset = offset; }
   void AlignmentOn(){m_iFlags |= allignment;}
   void ObstacleAvoidanceOn(){m_iFlags |= obstacle_avoidance;}
   void WallAvoidanceOn(){m_iFlags |= wall_avoidance;}
@@ -327,6 +331,7 @@ public:
   void EvadeOff(){if(On(evade)) m_iFlags ^=evade;}
   void CohesionOff(){if(On(cohesion)) m_iFlags ^=cohesion;}
   void SeparationOff(){if(On(separation)) m_iFlags ^=separation;}
+  void SeparationOffsetOff() { if (On(separation_offset)) m_iFlags ^= separation_offset; }
   void AlignmentOff(){if(On(allignment)) m_iFlags ^=allignment;}
   void ObstacleAvoidanceOff(){if(On(obstacle_avoidance)) m_iFlags ^=obstacle_avoidance;}
   void WallAvoidanceOff(){if(On(wall_avoidance)) m_iFlags ^=wall_avoidance;}

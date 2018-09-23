@@ -134,9 +134,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="2D\Vector2d.cpp" />
+    <ClCompile Include="LeaderAgent.cpp" />
     <ClCompile Include="misc\Cgdi.cpp" />
     <ClCompile Include="misc\iniFileLoaderBase.cpp" />
     <ClCompile Include="misc\WindowUtils.cpp" />
+    <ClCompile Include="PursuerAgent.cpp" />
     <ClCompile Include="time\CrudeTimer.cpp" />
     <ClCompile Include="Time\PrecisionTimer.cpp" />
     <ClCompile Include="GameWorld.cpp" />
@@ -155,6 +157,7 @@
     <ClInclude Include="2D\Vector2D.h" />
     <ClInclude Include="2D\Wall2D.h" />
     <ClInclude Include="2D\WallIntersectionTests.h" />
+    <ClInclude Include="LeaderAgent.h" />
     <ClInclude Include="misc\CellSpacePartition.h" />
     <ClInclude Include="misc\Cgdi.h" />
     <ClInclude Include="misc\iniFileLoaderBase.h" />
@@ -162,6 +165,7 @@
     <ClInclude Include="misc\Stream_Utility_Functions.h" />
     <ClInclude Include="misc\utils.h" />
     <ClInclude Include="misc\WindowUtils.h" />
+    <ClInclude Include="PursuerAgent.h" />
     <ClInclude Include="time\CrudeTimer.h" />
     <ClInclude Include="Time\PrecisionTimer.h" />
     <ClInclude Include="BaseGameEntity.h" />

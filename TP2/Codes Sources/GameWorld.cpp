@@ -1,5 +1,7 @@
 #include "GameWorld.h"
 #include "Vehicle.h"
+#include "LeaderAgent.h"
+#include "PursuerAgent.h"
 #include "constants.h"
 #include "Obstacle.h"
 #include "2d/Geometry.h"
@@ -48,8 +50,32 @@ GameWorld::GameWorld(int cx, int cy):
   double border = 30;
   m_pPath = new Path(5, border, border, cx-border, cy-border, true); 
 
-  //setup the agents
-  for (int a=0; a<Prm.NumAgents; ++a)
+  //setup the leader agent
+
+  //determine a random starting position
+  Vector2D SpawnPosLeader = Vector2D(cx / 2.0 + RandomClamped()*cx / 2.0,
+	  cy / 2.0 + RandomClamped()*cy / 2.0);
+
+  LeaderAgent* leader = new LeaderAgent(this,
+	  SpawnPosLeader,           //initial position
+	  RandFloat()*TwoPi,        //start rotation
+	  Vector2D(0, 0),           //velocity
+	  Prm.VehicleMass,          //mass
+	  Prm.MaxSteeringForce,     //max force
+	  Prm.MaxSpeed,             //max velocity
+	  Prm.MaxTurnRatePerSecond, //max turn rate
+	  Prm.VehicleScale);
+
+
+  m_Vehicles.push_back(leader);
+
+  //add it to the cell subdivision
+  m_pCellSpace->AddEntity(leader);
+
+  Vector2D offset = Vector2D(20, 20);
+
+  //setup the purser agents
+  for (int a=0; a<Prm.NumAgents-1 ; ++a)
   {
 
     //determine a random starting position
@@ -57,7 +83,7 @@ GameWorld::GameWorld(int cx, int cy):
                                  cy/2.0+RandomClamped()*cy/2.0);
 
 
-    Vehicle* pVehicle = new Vehicle(this,
+    PursuerAgent* pursuer = new PursuerAgent(this,
                                     SpawnPos,                 //initial position
                                     RandFloat()*TwoPi,        //start rotation
                                     Vector2D(0,0),            //velocity
@@ -65,30 +91,29 @@ GameWorld::GameWorld(int cx, int cy):
                                     Prm.MaxSteeringForce,     //max force
                                     Prm.MaxSpeed,             //max velocity
                                     Prm.MaxTurnRatePerSecond, //max turn rate
-                                    Prm.VehicleScale);        //scale
+                                    Prm.VehicleScale,		  //scale
+									m_Vehicles[a],
+									offset);       
 
-    pVehicle->Steering()->FlockingOn();
-
-    m_Vehicles.push_back(pVehicle);
+    m_Vehicles.push_back(pursuer);
 
     //add it to the cell subdivision
-    m_pCellSpace->AddEntity(pVehicle);
+    m_pCellSpace->AddEntity(pursuer);
   }
 
 
 #define SHOAL
 #ifdef SHOAL
-  m_Vehicles[Prm.NumAgents-1]->Steering()->FlockingOff();
-  m_Vehicles[Prm.NumAgents-1]->SetScale(Vector2D(10, 10));
-  m_Vehicles[Prm.NumAgents-1]->Steering()->WanderOn();
-  m_Vehicles[Prm.NumAgents-1]->SetMaxSpeed(70);
-
-
+  //m_Vehicles[Prm.NumAgents-1]->Steering()->FlockingOff();
+  m_Vehicles[0]->SetScale(Vector2D(10, 10));
+  //m_Vehicles[Prm.NumAgents-1]->Steering()->WanderOn();
+  m_Vehicles[0]->SetMaxSpeed(70);
+  /*
    for (int i=0; i<Prm.NumAgents-1; ++i)
   {
     m_Vehicles[i]->Steering()->EvadeOn(m_Vehicles[Prm.NumAgents-1]);
 
-  }
+  }*/
 #endif
  
   //create any obstacles or walls

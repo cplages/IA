@@ -84,6 +84,7 @@ SteeringBehavior::~SteeringBehavior(){delete m_pPath;}
 //------------------------------------------------------------------------
 Vector2D SteeringBehavior::Calculate()
 { 
+
   //reset the steering force
   m_vSteeringForce.Zero();
 
@@ -92,7 +93,7 @@ Vector2D SteeringBehavior::Calculate()
   if (!isSpacePartitioningOn())
   {
     //tag neighbors if any of the following 3 group behaviors are switched on
-    if (On(separation) || On(allignment) || On(cohesion))
+    if (On(separation) || On(separation_offset) || On(allignment) || On(cohesion))
     {
       m_pVehicle->World()->TagVehiclesWithinViewRange(m_pVehicle, m_dViewDistance);
     }
@@ -101,7 +102,7 @@ Vector2D SteeringBehavior::Calculate()
   {
     //calculate neighbours in cell-space if any of the following 3 group
     //behaviors are switched on
-    if (On(separation) || On(allignment) || On(cohesion))
+    if (On(separation) || On(separation_offset) || On(allignment) || On(cohesion))
     {
       m_pVehicle->World()->CellSpace()->CalculateNeighbors(m_pVehicle->Pos(), m_dViewDistance);
     }
@@ -244,6 +245,13 @@ Vector2D SteeringBehavior::CalculatePrioritized()
 
       if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
     }
+
+	if (On(separation_offset))
+	{
+		force = SeparationOffset(m_pVehicle->World()->Agents()) * m_dWeightSeparation;
+
+		if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
+	}
 
     if (On(allignment))
     {
@@ -393,6 +401,11 @@ Vector2D SteeringBehavior::CalculateWeightedSum()
       m_vSteeringForce += Separation(m_pVehicle->World()->Agents()) * m_dWeightSeparation;
     }
 
+	if (On(separation_offset))
+	{
+		m_vSteeringForce += SeparationOffset(m_pVehicle->World()->Agents()) * m_dWeightSeparation;
+	}
+
     if (On(allignment))
     {
       m_vSteeringForce += Alignment(m_pVehicle->World()->Agents()) * m_dWeightAlignment;
@@ -539,6 +552,19 @@ Vector2D SteeringBehavior::CalculateDithered()
         return m_vSteeringForce;
       }
     }
+
+	if (On(separation_offset) && RandFloat() < Prm.prSeparation)
+	{
+		m_vSteeringForce += SeparationOffset(m_pVehicle->World()->Agents()) *
+			m_dWeightSeparation / Prm.prSeparation;
+
+		if (!m_vSteeringForce.isZero())
+		{
+			m_vSteeringForce.Truncate(m_pVehicle->MaxForce());
+
+			return m_vSteeringForce;
+		}
+	}
   }
 
   else
@@ -1075,6 +1101,38 @@ Vector2D SteeringBehavior::Separation(const vector<Vehicle*> &neighbors)
   }
 
   return SteeringForce;
+}
+
+//---------------------------- Separation with offset --------------------------------
+//
+// this calculates a force repelling from the other neighbors (only if the distance
+// between the agents are inferior at the offset
+//------------------------------------------------------------------------
+Vector2D SteeringBehavior::SeparationOffset(const vector<Vehicle*> &neighbors)
+{
+	Vector2D SteeringForce;
+
+	for (unsigned int a = 0; a<neighbors.size(); ++a)
+	{
+		//make sure this agent isn't included in the calculations and that
+		//the agent being examined is close enough. ***also make sure it doesn't
+		//include the evade target ***
+		if ((neighbors[a] != m_pVehicle) && neighbors[a]->IsTagged() &&
+			(neighbors[a] != m_pTargetAgent1))
+		{
+			Vector2D ToAgent = m_pVehicle->Pos() - neighbors[a]->Pos();
+
+			//check offset between neighbors
+			if (ToAgent.Length() < m_vOffset.Length()) {
+				//OutputDebugString("OFFSET\n");
+				//scale the force inversely proportional to the agents distance  
+				//from its neighbor.
+				SteeringForce += Vec2DNormalize(ToAgent) / ToAgent.Length();
+			}
+		}
+	}
+
+	return SteeringForce;
 }
 
 
