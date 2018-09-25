@@ -3,6 +3,7 @@
 
 #include "Vehicle.h"
 
+/*a vehicle which is just wandering */
 
 class LeaderAgent : public Vehicle
 {

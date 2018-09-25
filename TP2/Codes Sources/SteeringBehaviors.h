@@ -231,8 +231,6 @@ private:
   
   Vector2D Separation(const std::vector<Vehicle*> &agents);
 
-  Vector2D SeparationOffset(const std::vector<Vehicle*> &agents);
-
   Vector2D Alignment(const std::vector<Vehicle*> &agents);
 
   //the following three are the same as above but they use cell-space

@@ -72,7 +72,8 @@ GameWorld::GameWorld(int cx, int cy):
   //add it to the cell subdivision
   m_pCellSpace->AddEntity(leader);
 
-  Vector2D offset = Vector2D(20, 20);
+  //offset for the pursuer agents.
+  Vector2D offset = Vector2D(10, 10);
 
   //setup the purser agents
   for (int a=0; a<Prm.NumAgents-1 ; ++a)
@@ -104,6 +105,8 @@ GameWorld::GameWorld(int cx, int cy):
 
 #define SHOAL
 #ifdef SHOAL
+  //modify leader physical caracteristics to make him different for the pursuers.
+
   //m_Vehicles[Prm.NumAgents-1]->Steering()->FlockingOff();
   m_Vehicles[0]->SetScale(Vector2D(10, 10));
   //m_Vehicles[Prm.NumAgents-1]->Steering()->WanderOn();

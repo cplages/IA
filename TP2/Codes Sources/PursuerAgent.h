@@ -3,6 +3,7 @@
 
 #include "Vehicle.h"
 
+/* class describing a vehicule type which is following another vehicle from a distance given(offset) and keep a distance (offset) between itself and it neighbors.*/
 
 class PursuerAgent : public Vehicle
 {
@@ -19,6 +20,7 @@ public:
 				Vehicle *target,
 				Vector2D offset);
 
+	//offset accessors
 	Vector2D getOffset();
 	void setOffset(Vector2D offset);
 
