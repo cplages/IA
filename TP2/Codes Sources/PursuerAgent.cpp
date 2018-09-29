@@ -6,23 +6,55 @@ PursuerAgent::PursuerAgent(GameWorld* world, Vector2D position, double rotation,
 	:Vehicle(world, position, rotation, velocity, mass, max_force, max_speed, max_turn_rate, scale)
 {
 	//define Pursuer behavior
-	SteeringBehavior * mySteering = Steering();
-	mySteering->OffsetPursuitOn(target, offset);
+	this->mySteering = Steering();
+	this->mySteering->OffsetPursuitOn(target, offset);
 	//use the same method as separate but define the offset distance from which the vehicles should be separated of.
-	mySteering->SeparationOffsetOn(offset);
+	this->mySteering->SeparationOffsetOn(offset);
+
+	this->targets.push_back(target);
+}
+
+void PursuerAgent::Update(double time_elapsed) 
+{
+	this->Vehicle::Update(time_elapsed);
+	this->findClosestTarget();
 }
 
 void PursuerAgent::setOffset(Vector2D offset) 
 {
-	SteeringBehavior * mySteering = Steering();
-	mySteering->SetOffset(offset);
+	this->mySteering->SetOffset(offset);
 }
 
 Vector2D PursuerAgent::getOffset() 
 {
-	SteeringBehavior * mySteering = Steering();
-	return mySteering->GetOffset();
+	return this->mySteering->GetOffset();
 }
+
+void PursuerAgent::findClosestTarget() 
+{
+	if (targets.size() > 1) 
+	{
+		Vehicle *closer_target = (*targets.begin());
+		double distance_min = (this->Pos()).Distance(closer_target->Pos()) ;
+		for(std::vector<Vehicle *>::iterator it = targets.begin() + 1 ; it != targets.end(); ++it) 
+		{
+			double tmp = (this->Pos()).Distance((*it)->Pos());
+			if (tmp < distance_min) {
+				closer_target = (*it);
+				distance_min = tmp;
+			}
+		}
+
+		this->mySteering->SetTargetAgent1(closer_target);
+	}
+}
+
+void PursuerAgent::setNewTarget(Vehicle *target) 
+{
+	this->targets.push_back(target);
+}
+
+
 PursuerAgent::~PursuerAgent()
 {
 }

@@ -56,27 +56,30 @@ GameWorld::GameWorld(int cx, int cy):
   Vector2D SpawnPosLeader = Vector2D(cx / 2.0 + RandomClamped()*cx / 2.0,
 	  cy / 2.0 + RandomClamped()*cy / 2.0);
 
-  LeaderAgent* leader = new LeaderAgent(this,
-	  SpawnPosLeader,           //initial position
-	  RandFloat()*TwoPi,        //start rotation
-	  Vector2D(0, 0),           //velocity
-	  Prm.VehicleMass,          //mass
-	  Prm.MaxSteeringForce,     //max force
-	  Prm.MaxSpeed,             //max velocity
-	  Prm.MaxTurnRatePerSecond, //max turn rate
-	  Prm.VehicleScale);
 
 
-  m_Vehicles.push_back(leader);
+  int leader_count = 2;
 
-  //add it to the cell subdivision
-  m_pCellSpace->AddEntity(leader);
+  for (int i = 0; i < leader_count; ++i)
+  {
+	  m_Vehicles.push_back(new LeaderAgent(this,
+		  SpawnPosLeader,           //initial position
+		  RandFloat()*TwoPi,        //start rotation
+		  Vector2D(0, 0),           //velocity
+		  Prm.VehicleMass,          //mass
+		  Prm.MaxSteeringForce,     //max force
+		  Prm.MaxSpeed,             //max velocity
+		  Prm.MaxTurnRatePerSecond, //max turn rate
+		  Prm.VehicleScale));
+
+	  m_pCellSpace->AddEntity(m_Vehicles[i]);
+  }
 
   //offset for the pursuer agents.
-  Vector2D offset = Vector2D(10, 10);
+  Vector2D offset = Vector2D(1, 1);
 
   //setup the purser agents
-  for (int a=0; a<Prm.NumAgents-1 ; ++a)
+  for (int a=leader_count - 1; a<Prm.NumAgents-1 ; ++a)
   {
 
     //determine a random starting position
@@ -96,6 +99,15 @@ GameWorld::GameWorld(int cx, int cy):
 									m_Vehicles[a],
 									offset);       
 
+	if (a == leader_count - 1) 
+	{
+		for (int i = 0; i < leader_count - 1; ++i) 
+		{
+			pursuer->setNewTarget(m_Vehicles[i]);
+		}
+		
+	}
+
     m_Vehicles.push_back(pursuer);
 
     //add it to the cell subdivision
@@ -107,10 +119,12 @@ GameWorld::GameWorld(int cx, int cy):
 #ifdef SHOAL
   //modify leader physical caracteristics to make him different for the pursuers.
 
-  //m_Vehicles[Prm.NumAgents-1]->Steering()->FlockingOff();
-  m_Vehicles[0]->SetScale(Vector2D(10, 10));
-  //m_Vehicles[Prm.NumAgents-1]->Steering()->WanderOn();
-  m_Vehicles[0]->SetMaxSpeed(70);
+  for (int i = 0; i < leader_count; ++i) 
+  {
+	  m_Vehicles[i]->SetScale(Vector2D(10, 10));
+	  m_Vehicles[i]->SetMaxSpeed(70);
+  }
+
   /*
    for (int i=0; i<Prm.NumAgents-1; ++i)
   {
