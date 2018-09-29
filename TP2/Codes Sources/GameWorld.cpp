@@ -93,8 +93,8 @@ GameWorld::GameWorld(int cx, int cy):
                                     Prm.MaxSpeed,             //max velocity
                                     Prm.MaxTurnRatePerSecond, //max turn rate
                                     Prm.VehicleScale,		  //scale
-									m_Vehicles[a],
-									offset);       
+									m_Vehicles[a],			  //target
+									offset);				  //offset
 
     m_Vehicles.push_back(pursuer);
 

@@ -1,0 +1,142 @@
+
+*.pdf
+
+TP2/Codes Sources/Debug/SteeringBehaviors\.obj
+
+TP2/Codes Sources/Debug/SteeringBehaviors\.sbr
+
+TP2/Codes Sources/Debug/vc141\.idb
+
+TP2/Codes Sources/Debug/vc141\.pdb
+
+TP2/Codes Sources/Debug/Vector2d\.obj
+
+TP2/Codes Sources/Debug/Vehicle\.sbr
+
+TP2/Codes Sources/Debug/WindowUtils\.obj
+
+TP2/Codes Sources/Debug/WindowUtils\.sbr
+
+TP2/Codes Sources/Steering\.vcxproj\.user
+
+TP2/Codes Sources/\.vs/Steering/v15/\.suo
+
+TP2/Codes Sources/\.vs/Steering/v15/Browse\.VC\.db
+
+TP2/Codes Sources/\.vs/Steering/v15/ipch/AutoPCH/13d3226170bbd69c/CGDI\.ipch
+
+TP2/Codes Sources/\.vs/Steering/v15/ipch/AutoPCH/15a439686999c059/GAMEWORLD\.ipch
+
+TP2/Codes Sources/\.vs/Steering/v15/ipch/AutoPCH/37608334b0389d46/CRUDETIMER\.ipch
+
+TP2/Codes Sources/\.vs/Steering/v15/ipch/AutoPCH/419ecd0ae978940f/LEADERAGENT\.ipch
+
+TP2/Codes Sources/\.vs/Steering/v15/ipch/AutoPCH/62c7f37c082db9d1/INIFILELOADERBASE\.ipch
+
+TP2/Codes Sources/\.vs/Steering/v15/ipch/AutoPCH/6b4a70f51fb5b90e/MAIN\.ipch
+
+TP2/Codes Sources/\.vs/Steering/v15/ipch/AutoPCH/98aa5028be778865/VEHICLE\.ipch
+
+TP2/Codes Sources/\.vs/Steering/v15/ipch/AutoPCH/98b7b7ae658615fa/PURSUERAGENT\.ipch
+
+TP2/Codes Sources/\.vs/Steering/v15/ipch/AutoPCH/b8e90e1bf1fe6ff7/STEERINGBEHAVIORS\.ipch
+
+TP2/Codes Sources/\.vs/Steering/v15/ipch/AutoPCH/d4e02e4434354ed/PRECISIONTIMER\.ipch
+
+TP2/Codes Sources/\.vs/Steering/v15/ipch/AutoPCH/dab397f707698d26/WINDOWUTILS\.ipch
+
+TP2/Codes Sources/\.vs/Steering/v15/ipch/AutoPCH/f170d1684c2fce40/VECTOR2D\.ipch
+
+TP2/Codes Sources/Debug/Cgdi\.obj
+
+TP2/Codes Sources/Debug/Cgdi\.sbr
+
+TP2/Codes Sources/Debug/CrudeTimer\.obj
+
+TP2/Codes Sources/Debug/CrudeTimer\.sbr
+
+TP2/Codes Sources/Debug/GameWorld\.obj
+
+TP2/Codes Sources/Debug/GameWorld\.sbr
+
+TP2/Codes Sources/Debug/iniFileLoaderBase\.obj
+
+TP2/Codes Sources/Debug/iniFileLoaderBase\.sbr
+
+TP2/Codes Sources/Debug/LeaderAgent\.obj
+
+TP2/Codes Sources/Debug/LeaderAgent\.sbr
+
+TP2/Codes Sources/Debug/main\.obj
+
+TP2/Codes Sources/Debug/main\.sbr
+
+TP2/Codes Sources/Debug/Obstacle\.obj
+
+TP2/Codes Sources/Debug/Obstacle\.sbr
+
+TP2/Codes Sources/Debug/ParamLoader\.obj
+
+TP2/Codes Sources/Debug/ParamLoader\.sbr
+
+TP2/Codes Sources/Debug/Path\.obj
+
+TP2/Codes Sources/Debug/Path\.sbr
+
+TP2/Codes Sources/Debug/PrecisionTimer\.obj
+
+TP2/Codes Sources/Debug/PrecisionTimer\.sbr
+
+TP2/Codes Sources/Debug/PursuerAgent\.obj
+
+TP2/Codes Sources/Debug/PursuerAgent\.sbr
+
+TP2/Codes Sources/Debug/RCa01724
+
+TP2/Codes Sources/Debug/RCa04900
+
+TP2/Codes Sources/Debug/RCa11184
+
+TP2/Codes Sources/Debug/Script1\.res
+
+TP2/Codes Sources/Debug/Steering\.bsc
+
+TP2/Codes Sources/Debug/Steering\.exe
+
+TP2/Codes Sources/Debug/Steering\.ilk
+
+TP2/Codes Sources/Debug/Steering\.log
+
+TP2/Codes Sources/Debug/Steering\.pdb
+
+TP2/Codes Sources/Debug/Steering\.tlog/bscmake\.command\.1\.tlog
+
+TP2/Codes Sources/Debug/Steering\.tlog/bscmake\.read\.1\.tlog
+
+TP2/Codes Sources/Debug/Steering\.tlog/bscmake\.write\.1\.tlog
+
+TP2/Codes Sources/Debug/Steering\.tlog/CL\.command\.1\.tlog
+
+TP2/Codes Sources/Debug/Steering\.tlog/CL\.read\.1\.tlog
+
+TP2/Codes Sources/Debug/Steering\.tlog/CL\.write\.1\.tlog
+
+TP2/Codes Sources/Debug/Steering\.tlog/link\.command\.1\.tlog
+
+TP2/Codes Sources/Debug/Steering\.tlog/link\.read\.1\.tlog
+
+TP2/Codes Sources/Debug/Steering\.tlog/link\.write\.1\.tlog
+
+TP2/Codes Sources/Debug/Steering\.tlog/rc\.command\.1\.tlog
+
+TP2/Codes Sources/Debug/Steering\.tlog/rc\.read\.1\.tlog
+
+TP2/Codes Sources/Debug/Steering\.tlog/rc\.write\.1\.tlog
+
+TP2/Codes Sources/Debug/Steering\.tlog/Steering\.lastbuildstate
+
+TP2/Codes Sources/Debug/Vector2d\.sbr
+
+TP2/Codes Sources/Debug/Vehicle\.obj
+
+TP2/Codes Sources/Script1\.rc
