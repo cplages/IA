@@ -7,6 +7,10 @@
 
 class PursuerAgent : public Vehicle
 {
+private:
+	SteeringBehavior *mySteering;
+	std::vector<Vehicle *> targets;
+
 public:
 	PursuerAgent(GameWorld* world,
 				Vector2D position,
@@ -20,9 +24,17 @@ public:
 				Vehicle *target,
 				Vector2D offset);
 
+	
+	void        Update(double time_elapsed);
+	
 	//offset accessors
 	Vector2D getOffset();
 	void setOffset(Vector2D offset);
+
+	void findClosestTarget();
+
+	void setNewTarget(Vehicle *target);
+
 
 	~PursuerAgent();
 };
