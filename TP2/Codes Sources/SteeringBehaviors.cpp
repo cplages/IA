@@ -362,6 +362,11 @@ Vector2D SteeringBehavior::CalculatePrioritized()
     if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
   }
 
+  if (On(human))
+  {
+	  force = Human();
+	  if (!AccumulateForce(m_vSteeringForce, force)) return m_vSteeringForce;
+  }
   return m_vSteeringForce;
 }
 
@@ -486,7 +491,11 @@ Vector2D SteeringBehavior::CalculateWeightedSum()
     m_vSteeringForce += FollowPath() * m_dWeightFollowPath;
   }
 
-  m_vSteeringForce.Truncate(m_pVehicle->MaxForce());
+  if (On(human))
+  {
+	  m_vSteeringForce += Human();
+  }
+	m_vSteeringForce.Truncate(m_pVehicle->MaxForce());
  
   return m_vSteeringForce;
 }
@@ -1445,10 +1454,29 @@ Vector2D SteeringBehavior::OffsetPursuit(const Vehicle*  leader,
   return Arrive(WorldOffsetPos + leader->Velocity() * LookAheadTime, fast);
 }
 
-
-
 //for receiving keyboard input from user
 #define KEYDOWN(vk_code) ((GetAsyncKeyState(vk_code) & 0x8000) ? 1 : 0)
+
+Vector2D SteeringBehavior::Human()
+{
+	if (KEYDOWN(VK_UP))
+	{
+		OutputDebugString("up\n");
+	}
+	if (KEYDOWN(VK_DOWN))
+	{
+		OutputDebugString("down\n");
+	}
+	if (KEYDOWN(VK_LEFT))
+	{
+		OutputDebugString("left\n");
+	}
+	if (KEYDOWN(VK_RIGHT))
+	{
+		OutputDebugString("right\n");
+	}
+	return Vector2D(0, 0);
+}
 //----------------------------- RenderAids -------------------------------
 //
 //------------------------------------------------------------------------

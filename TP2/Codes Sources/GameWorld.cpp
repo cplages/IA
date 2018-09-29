@@ -58,7 +58,7 @@ GameWorld::GameWorld(int cx, int cy):
 
 
 
-  int leader_count = 2;
+  int leader_count = 1;
 
   for (int i = 0; i < leader_count; ++i)
   {
@@ -70,7 +70,8 @@ GameWorld::GameWorld(int cx, int cy):
 		  Prm.MaxSteeringForce,     //max force
 		  Prm.MaxSpeed,             //max velocity
 		  Prm.MaxTurnRatePerSecond, //max turn rate
-		  Prm.VehicleScale));
+		  Prm.VehicleScale,
+		  true));
 
 	  m_pCellSpace->AddEntity(m_Vehicles[i]);
   }

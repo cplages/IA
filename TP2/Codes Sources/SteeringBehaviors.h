@@ -66,6 +66,7 @@ private:
     flock              = 0x08000,
     offset_pursuit     = 0x10000,
 	separation_offset  = 0x20000,
+	human			   = 0x40000
   };
 
 private:
@@ -239,6 +240,9 @@ private:
   Vector2D SeparationPlus(const std::vector<Vehicle*> &agents);
   Vector2D AlignmentPlus(const std::vector<Vehicle*> &agents);
 
+  // -- Human -- //
+
+  Vector2D Human();
     /* .......................................................
 
                        END BEHAVIOR DECLARATIONS
@@ -320,6 +324,7 @@ public:
   void HideOn(Vehicle* v){m_iFlags |= hide; m_pTargetAgent1 = v;}
   void OffsetPursuitOn(Vehicle* v1, const Vector2D offset){m_iFlags |= offset_pursuit; m_vOffset = offset; m_pTargetAgent1 = v1;}  
   void FlockingOn(){CohesionOn(); AlignmentOn(); SeparationOn(); WanderOn();}
+  void HumanOn() { m_iFlags |= human; }
 
   void FleeOff()  {if(On(flee))   m_iFlags ^=flee;}
   void SeekOff()  {if(On(seek))   m_iFlags ^=seek;}
@@ -338,6 +343,7 @@ public:
   void HideOff(){if(On(hide)) m_iFlags ^=hide;}
   void OffsetPursuitOff(){if(On(offset_pursuit)) m_iFlags ^=offset_pursuit;}
   void FlockingOff(){CohesionOff(); AlignmentOff(); SeparationOff(); WanderOff();}
+  void HumanOff() { if (On(human)) m_iFlags ^= human; }
 
   bool isFleeOn(){return On(flee);}
   bool isSeekOn(){return On(seek);}
@@ -354,6 +360,7 @@ public:
   bool isInterposeOn(){return On(interpose);}
   bool isHideOn(){return On(hide);}
   bool isOffsetPursuitOn(){return On(offset_pursuit);}
+  bool isHumanOn() { return On(human); }
 
   double DBoxLength()const{return m_dDBoxLength;}
   const std::vector<Vector2D>& GetFeelers()const{return m_Feelers;}
