@@ -114,7 +114,7 @@ void Vehicle::Update(double time_elapsed)
 
 //-------------------------------- Render -------------------------------------
 //-----------------------------------------------------------------------------
-void Vehicle::Render()
+void Vehicle::Render(int vehicleColor)
 {
 	//a vector to hold the transformed vertices
 	static std::vector<Vector2D>  m_vecVehicleVBTrans;
@@ -124,12 +124,13 @@ void Vehicle::Render()
 	{
 		if (ID() == 0) gdi->RedPen();
 		else if (IsTagged()) gdi->GreenPen();
+		else if (vehicleColor == 0) gdi->GreenPen();
+		else if (vehicleColor == 1) gdi->RedPen();
 		else gdi->BluePen();
 	}
-	else
-	{
-		gdi->BluePen();
-	}
+	else if (vehicleColor == 0) gdi->GreenPen();
+	else if (vehicleColor == 1) gdi->RedPen();
+	else gdi->BluePen();
 
 	if (Steering()->isInterposeOn())
 	{

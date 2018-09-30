@@ -9,6 +9,7 @@ class LeaderAgent : public Vehicle
 {
 private:
 	SteeringBehavior *mySteering;
+	bool isHuman;
 
 public:
 	LeaderAgent(GameWorld* world,

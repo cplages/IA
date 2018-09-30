@@ -8,6 +8,7 @@ LeaderAgent::LeaderAgent(GameWorld* world, Vector2D position, double rotation, V
 {
 	//define the vehicle behavior.
 	this->mySteering = Steering();
+	this->isHuman = human;
 
 	if (human) 
 	{
@@ -31,6 +32,8 @@ void LeaderAgent::SetHumanBehaviour(bool isHuman)
 		this->mySteering->HumanOff();
 		this->mySteering->WanderOn();
 	}
+
+	this->isHuman = isHuman;
 }
 
 

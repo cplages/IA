@@ -5,6 +5,7 @@
 #include "MovingEntity.h"
 #include "2d/Vector2D.h"
 #include "misc/Smoother.h"
+#include "misc/cgdi.h"
 
 #include <vector>
 #include <list>
@@ -74,7 +75,7 @@ public:
   //updates the vehicle's position and orientation
   virtual void        Update(double time_elapsed);
 
-  void        Render();
+  void        Render(int vehicleColor);
 
                                                                           
   //-------------------------------------------accessor methods
@@ -90,7 +91,6 @@ public:
   void        ToggleSmoothing(){m_bSmoothingOn = !m_bSmoothingOn;}
   
   double       TimeElapsed()const{return m_dTimeElapsed;}
- 
 };
 
 

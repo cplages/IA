@@ -84,7 +84,6 @@ SteeringBehavior::~SteeringBehavior() { delete m_pPath; }
 //------------------------------------------------------------------------
 Vector2D SteeringBehavior::Calculate()
 {
-
 	//reset the steering force
 	m_vSteeringForce.Zero();
 
@@ -140,7 +139,7 @@ Vector2D SteeringBehavior::Calculate()
 
 //------------------------- ForwardComponent -----------------------------
 //
-//  returns the forward oomponent of the steering force
+//  returns the forward component of the steering force
 //------------------------------------------------------------------------
 double SteeringBehavior::ForwardComponent()
 {
@@ -1460,6 +1459,7 @@ Vector2D SteeringBehavior::OffsetPursuit(const Vehicle*  leader,
 Vector2D SteeringBehavior::Human()
 {
 	Vector2D direction;
+
 	if (KEYDOWN(VK_UP))
 	{
 		direction = Vector2D(0, 10);
@@ -1716,9 +1716,7 @@ void SteeringBehavior::RenderAids()
 		if (KEYDOWN('D')) { m_dWaypointSeekDistSq += 1.0; }
 		if (KEYDOWN('C')) { m_dWaypointSeekDistSq -= 1.0; Clamp(m_dWaypointSeekDistSq, 0.0f, 400.0f); }
 	}
-
 }
-
 
 
 

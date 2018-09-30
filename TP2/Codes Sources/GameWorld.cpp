@@ -725,7 +725,20 @@ void GameWorld::Render()
 	//render the agents
 	for (unsigned int a = 0; a < m_Vehicles.size(); ++a)
 	{
-		m_Vehicles[a]->Render();
+		if (HumanControlled())
+		{
+			if (a == 0)
+				m_Vehicles[a]->Render(0); // leader green
+			else
+				m_Vehicles[a]->Render(2); // pursers blue
+		}
+		else
+		{
+			if (a < Prm.NumLeaders)
+				m_Vehicles[a]->Render(1); // leader red
+			else
+				m_Vehicles[a]->Render(2); // pursers blue
+		}
 
 		//render cell partitioning stuff
 		if (m_bShowCellSpaceInfo && a == 0)
