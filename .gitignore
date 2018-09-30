@@ -142,3 +142,5 @@ TP2/Codes Sources/Debug/Vehicle\.obj
 TP2/Codes Sources/Script1\.rc
 
 *.opendb
+
+*.ipch

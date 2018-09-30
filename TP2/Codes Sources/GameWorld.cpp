@@ -45,15 +45,10 @@ GameWorld::GameWorld(int cx, int cy) :
 	m_bHumanControlled(false)
 {
 	//setup the spatial subdivision class
-	m_pCellSpace = new CellSpacePartition<Vehicle*>((double)cx, (double)cy, Prm.NumCellsX, Prm.NumCellsY, Prm.NumAgents);
+	m_pCellSpace = new CellSpacePartition<Vehicle*>((double)cx, (double)cy, Prm.NumCellsX, Prm.NumCellsY, Prm.NumPursuerAgents+Prm.NumLeaders);
 
 	double border = 30;
 	m_pPath = new Path(5, border, border, cx - border, cy - border, true);
-	
-	// Quand le joueur controle un leader, il n'y en a qu'un seul
-	if (m_bHumanControlled)
-		Prm.NumLeaders = 1;
-		
 
 	for (int i = 0; i < Prm.NumLeaders; ++i)
 	{
@@ -78,44 +73,59 @@ GameWorld::GameWorld(int cx, int cy) :
 	//offset for the pursuer agents.
 	Vector2D offset = Vector2D(Prm.OffsetPursuit, Prm.OffsetPursuit);
 
-	//setup the purser agents
-	for (int a = Prm.NumLeaders - 1; a < Prm.NumAgents - 1; ++a)
+	// setup the pursuer agents :
+	// the first pursuer agent is configured to follow the nearest leader
+	Vector2D SpawnPos = Vector2D(cx / 2.0 + RandomClamped()*cx / 2.0,
+		cy / 2.0 + RandomClamped()*cy / 2.0);
+
+	PursuerAgent* pursuer = new PursuerAgent(this,
+		SpawnPos,						//initial position
+		RandFloat()*TwoPi,				//start rotation
+		Vector2D(0, 0),					//velocity
+		Prm.VehicleMass,				//mass
+		Prm.MaxSteeringForce,			//max force
+		Prm.MaxSpeed,					//max velocity
+		Prm.MaxTurnRatePerSecond,		//max turn rate
+		Prm.VehicleScale,				//scale
+		m_Vehicles[Prm.NumLeaders-1],	//target
+		offset);						//offset
+
+	for (int i = 0; i < Prm.NumLeaders; i++)
+	{
+		pursuer->setNewTarget(m_Vehicles[i]);
+	}
+
+	m_Vehicles.push_back(pursuer);
+	m_pCellSpace->AddEntity(pursuer);
+
+	// after, configure all other pursuer agent
+	for (int a = 0; a < Prm.NumPursuerAgents - 1; a++)
 	{
 		//determine a random starting position
 		Vector2D SpawnPos = Vector2D(cx / 2.0 + RandomClamped()*cx / 2.0,
 			cy / 2.0 + RandomClamped()*cy / 2.0);
 
 		PursuerAgent* pursuer = new PursuerAgent(this,
-			SpawnPos,                 //initial position
-			RandFloat()*TwoPi,        //start rotation
-			Vector2D(0, 0),            //velocity
-			Prm.VehicleMass,          //mass
-			Prm.MaxSteeringForce,     //max force
-			Prm.MaxSpeed,             //max velocity
-			Prm.MaxTurnRatePerSecond, //max turn rate
-			Prm.VehicleScale,		  //scale
-			m_Vehicles[a],			  //target
-			offset);				  //offset
-
-		if (a == Prm.NumLeaders - 1)
-		{
-			for (int i = 0; i < Prm.NumLeaders - 1; ++i)
-			{
-				pursuer->setNewTarget(m_Vehicles[i]);
-			}
-		}
+			SpawnPos,						//initial position
+			RandFloat()*TwoPi,				//start rotation
+			Vector2D(0, 0),					//velocity
+			Prm.VehicleMass,				//mass
+			Prm.MaxSteeringForce,			//max force
+			Prm.MaxSpeed,					//max velocity
+			Prm.MaxTurnRatePerSecond,		//max turn rate
+			Prm.VehicleScale,				//scale
+			m_Vehicles[Prm.NumLeaders+a],	//target
+			offset);						//offset
 
 		m_Vehicles.push_back(pursuer);
-
-		//add it to the cell subdivision
 		m_pCellSpace->AddEntity(pursuer);
 	}
 
 
 #define SHOAL
 #ifdef SHOAL
-	//modify leader physical caracteristics to make him different for the pursuers.
 
+	//modify leader physical caracteristics to make him different for the pursuers.
 	for (int i = 0; i < Prm.NumLeaders; ++i)
 	{
 		m_Vehicles[i]->SetScale(Vector2D(10, 10));
@@ -303,26 +313,31 @@ void GameWorld::HandleKeyPresses(WPARAM wParam)
 	}
 	break;
 
-	// num leader
+	// num leaders
 	case 'K':
 	{
-		// if not mode human...
+		if (HumanControlled()) break;
+
 		if (Prm.NumLeaders > 1)
 		{
 			Prm.NumLeaders--;
 
-			Vehicle* newLeader = m_Vehicles[0];
+			Vehicle* oldLeader = m_Vehicles[0];
 
-			m_pCellSpace->RemoveEntity(newLeader);
+			m_pCellSpace->RemoveEntity(oldLeader);
 			m_Vehicles.erase(m_Vehicles.begin());
 
-			delete newLeader;
+			delete oldLeader;
+
+			// remove the leader from the first pursuer agent
+			((PursuerAgent*)m_Vehicles[Prm.NumLeaders])->removeTarget(0);
 		}
 	}
 	break;
 	case 'L':
 	{
-		// if not mode human...
+		if (HumanControlled()) break;
+
 		Prm.NumLeaders ++;
 
 		//determine a random starting position
@@ -345,6 +360,62 @@ void GameWorld::HandleKeyPresses(WPARAM wParam)
 
 		newLeader->SetScale(Vector2D(10, 10));
 		newLeader->SetMaxSpeed(70);
+		
+		// we precise to the first pursuer agent that there is a new leader
+		((PursuerAgent*)m_Vehicles[Prm.NumLeaders])->setNewTarget(newLeader);
+	}
+	break;
+
+	// num agents
+	case 'M':
+	{
+		if (Prm.NumPursuerAgents > 0)
+		{
+			Vehicle* oldPursuer = m_Vehicles[m_Vehicles.size()-1];
+
+			m_pCellSpace->RemoveEntity(oldPursuer);
+			m_Vehicles.erase(m_Vehicles.end()-1);
+
+			delete oldPursuer;
+
+			Prm.NumPursuerAgents--;
+		}
+	}
+	break;
+
+	case 'Q':
+	{
+		//offset for the pursuer agents.
+		Vector2D offset = Vector2D(Prm.OffsetPursuit, Prm.OffsetPursuit);
+
+		Vector2D SpawnPos = Vector2D(m_cxClient / 2.0 + RandomClamped()*m_cxClient / 2.0,
+			m_cyClient / 2.0 + RandomClamped()*m_cyClient / 2.0);
+
+		PursuerAgent* pursuer = new PursuerAgent(this,
+			SpawnPos,						//initial position
+			RandFloat()*TwoPi,				//start rotation
+			Vector2D(0, 0),					//velocity
+			Prm.VehicleMass,				//mass
+			Prm.MaxSteeringForce,			//max force
+			Prm.MaxSpeed,					//max velocity
+			Prm.MaxTurnRatePerSecond,		//max turn rate
+			Prm.VehicleScale,				//scale
+			m_Vehicles[m_Vehicles.size()-1],	//target
+			offset);						//offset
+
+		// there was no pursuer, so set all leader to this new pursuer
+		if (Prm.NumPursuerAgents == 0)
+		{
+			for (int i = 0; i < Prm.NumLeaders; i++)
+			{
+				pursuer->setNewTarget(m_Vehicles[i]);
+			}
+		}
+		
+		m_Vehicles.push_back(pursuer);
+		m_pCellSpace->AddEntity(pursuer);
+
+		Prm.NumPursuerAgents++;
 	}
 	break;
 
@@ -360,13 +431,11 @@ void GameWorld::HandleKeyPresses(WPARAM wParam)
 		{
 			m_Vehicles[i]->ToggleSmoothing();
 		}
-
 	}
-
 	break;
 
 	case 'Y':
-
+	{
 		m_bShowObstacles = !m_bShowObstacles;
 
 		if (!m_bShowObstacles)
@@ -387,7 +456,8 @@ void GameWorld::HandleKeyPresses(WPARAM wParam)
 				m_Vehicles[i]->Steering()->ObstacleAvoidanceOn();
 			}
 		}
-		break;
+	}
+	break;
 
 	}//end switch
 }
@@ -395,7 +465,7 @@ void GameWorld::HandleKeyPresses(WPARAM wParam)
 //-------------------------- SetupMenuItems ------------------------------
 // Cette fonction est appelée à la création de la fenetre windows
 // pour cocher les bons paramètres
-void GameWorld::SetupMenuItems(WPARAM wParam, HWND hwnd)
+void GameWorld::InitializeMenuItems(WPARAM wParam, HWND hwnd)
 {
 	CheckMenuItemAppropriately(hwnd, ID_VIEW_KEYS, m_bViewKeys);
 	CheckMenuItemAppropriately(hwnd, ID_VIEW_FPS, RenderFPS());
@@ -599,12 +669,30 @@ void GameWorld::HandleMenuItems(WPARAM wParam, HWND hwnd)
 
 	case ID_MENU_HUMAN:
 	{
-		OutputDebugString("\nC'est ici qu'il faut continuer de travailler !\nGameWorld.cpp -> ligne 602\n\n");
-		// remove wandering leader and add a human leader
-		//...
-
 		ToggleHumanControlled();
 		CheckMenuItemAppropriately(hwnd, ID_MENU_HUMAN, HumanControlled());
+
+		for (int i = 0; i < Prm.NumLeaders - 1; i++)
+		{
+			Vehicle* newLeader = m_Vehicles[0];
+
+			m_pCellSpace->RemoveEntity(newLeader);
+			m_Vehicles.erase(m_Vehicles.begin());
+
+			delete newLeader;
+		}
+
+		// remove all leader except one from the first pursuer agent
+		for (int i = 0; i < Prm.NumLeaders - 1; i++)
+		{
+			((PursuerAgent*)m_Vehicles[1])->removeTarget(0);
+		}
+
+		// Au final en cochant ou décochant HumanControlled on aura un seul leader
+		Prm.NumLeaders = 1;
+
+		// Modifie le comportement du leader restant
+		((LeaderAgent*)m_Vehicles[0])->SetHumanBehaviour(HumanControlled());
 	}
 
 	break;

@@ -7,6 +7,9 @@
 
 class LeaderAgent : public Vehicle
 {
+private:
+	SteeringBehavior *mySteering;
+
 public:
 	LeaderAgent(GameWorld* world,
 		Vector2D position,
@@ -18,6 +21,8 @@ public:
 		double    max_turn_rate,
 		double    scale,
 		bool human);
+
+	void SetHumanBehaviour(bool isHuman);
 
 	~LeaderAgent();
 };

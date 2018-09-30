@@ -1492,20 +1492,38 @@ void SteeringBehavior::RenderAids()
 
 	int NextSlot = 0; int SlotSize = 20;
 
-	if (KEYDOWN(VK_INSERT)) { m_pVehicle->SetMaxForce(m_pVehicle->MaxForce() + 1000.0f*m_pVehicle->TimeElapsed()); }
-	if (KEYDOWN(VK_DELETE)) { if (m_pVehicle->MaxForce() > 0.2f) m_pVehicle->SetMaxForce(m_pVehicle->MaxForce() - 1000.0f*m_pVehicle->TimeElapsed()); }
-	if (KEYDOWN(VK_HOME)) { m_pVehicle->SetMaxSpeed(m_pVehicle->MaxSpeed() + 50.0f*m_pVehicle->TimeElapsed()); }
-	if (KEYDOWN(VK_END)) { if (m_pVehicle->MaxSpeed() > 0.2f) m_pVehicle->SetMaxSpeed(m_pVehicle->MaxSpeed() - 50.0f*m_pVehicle->TimeElapsed()); }
+	if (KEYDOWN(VK_INSERT))
+	{
+		Prm.MaxSteeringForce += 1000.0f*m_pVehicle->TimeElapsed();
+		m_pVehicle->SetMaxForce(Prm.MaxSteeringForce);
+	}
+	if (KEYDOWN(VK_DELETE))
+	{
+		if (Prm.MaxSteeringForce > 0.2f) Prm.MaxSteeringForce -= 1000.0f*m_pVehicle->TimeElapsed();
+		if (Prm.MaxSteeringForce < 0) Prm.MaxSteeringForce = 0.0f;
+		m_pVehicle->SetMaxForce(Prm.MaxSteeringForce);
+	}
+	if (KEYDOWN(VK_HOME))
+	{
+		Prm.MaxSpeed += 50.0f*m_pVehicle->TimeElapsed();
+		m_pVehicle->SetMaxSpeed(Prm.MaxSpeed);
+	}
+	if (KEYDOWN(VK_END))
+	{
+		if (Prm.MaxSpeed > 0.2f) Prm.MaxSpeed -= 50.0f*m_pVehicle->TimeElapsed();
+		if (Prm.MaxSpeed < 0) Prm.MaxSpeed = 0.0f;
+		m_pVehicle->SetMaxSpeed(Prm.MaxSpeed);
+	}
 
-	if (m_pVehicle->MaxForce() < 0) m_pVehicle->SetMaxForce(0.0f);
-	if (m_pVehicle->MaxSpeed() < 0) m_pVehicle->SetMaxSpeed(0.0f);
-
+	// Gère l'affichage des différents paramètres modifiables
+	// (Très peu logique d'avoir foutu dans cette classe d'après moi...)
 	if (m_pVehicle->ID() == 0)
 	{
-		gdi->TextAtPos(5, NextSlot, "MaxForce(Ins/Del):"); gdi->TextAtPos(160, NextSlot, ttos(m_pVehicle->MaxForce() / Prm.SteeringForceTweaker)); NextSlot += SlotSize;
-		gdi->TextAtPos(5, NextSlot, "MaxSpeed(Home/End):"); gdi->TextAtPos(160, NextSlot, ttos(m_pVehicle->MaxSpeed())); NextSlot += SlotSize;
+		gdi->TextAtPos(5, NextSlot, "MaxForce(Ins/Del):"); gdi->TextAtPos(160, NextSlot, ttos(Prm.MaxSteeringForce / Prm.SteeringForceTweaker)); NextSlot += SlotSize;
+		gdi->TextAtPos(5, NextSlot, "MaxSpeed(Home/End):"); gdi->TextAtPos(160, NextSlot, ttos(Prm.MaxSpeed)); NextSlot += SlotSize;
 		gdi->TextAtPos(5, NextSlot, "OffsetPursuit(E/J):"); gdi->TextAtPos(160, NextSlot, ttos(Prm.OffsetPursuit)); NextSlot += SlotSize;
-		gdi->TextAtPos(5, NextSlot, "NumLeaders(K/L):"); gdi->TextAtPos(160, NextSlot, ttos(Prm.NumLeaders)); NextSlot += SlotSize;
+		gdi->TextAtPos(5, NextSlot, "NumAgents(M/Q):"); gdi->TextAtPos(160, NextSlot, ttos(Prm.NumPursuerAgents)); NextSlot += SlotSize;
+		if (!isHumanOn()){gdi->TextAtPos(5, NextSlot, "NumLeaders(K/L):"); gdi->TextAtPos(160, NextSlot, ttos(Prm.NumLeaders)); NextSlot += SlotSize;}
 	}
 
 	//render the steering force
@@ -1519,14 +1537,16 @@ void SteeringBehavior::RenderAids()
 	// offset
 	if (KEYDOWN('E'))
 	{
-		Prm.OffsetPursuit -= 0.5f * m_pVehicle->TimeElapsed();
+		Prm.OffsetPursuit -= 1.0f * m_pVehicle->TimeElapsed();
+		if (Prm.OffsetPursuit < 1.0f) Prm.OffsetPursuit = 1.0f;
 		m_pVehicle->Steering()->SetOffset(Vector2D(Prm.OffsetPursuit, Prm.OffsetPursuit));
 	}
 	if (KEYDOWN('J'))
 	{
-		Prm.OffsetPursuit += 0.5f * m_pVehicle->TimeElapsed();
+		Prm.OffsetPursuit += 1.0f * m_pVehicle->TimeElapsed();
 		m_pVehicle->Steering()->SetOffset(Vector2D(Prm.OffsetPursuit, Prm.OffsetPursuit));
 	}
+
 
 	//render wander stuff if relevant
 	if (On(wander) && m_pVehicle->World()->RenderWanderCircle())

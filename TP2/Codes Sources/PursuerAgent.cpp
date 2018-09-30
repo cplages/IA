@@ -11,7 +11,7 @@ PursuerAgent::PursuerAgent(GameWorld* world, Vector2D position, double rotation,
 	//use the same method as separate but define the offset distance from which the vehicles should be separated of.
 	this->mySteering->SeparationOffsetOn(offset);
 
-	this->targets.push_back(target);
+	this->targets.emplace(this->targets.begin(), target);
 }
 
 void PursuerAgent::Update(double time_elapsed) 
@@ -51,7 +51,13 @@ void PursuerAgent::findClosestTarget()
 
 void PursuerAgent::setNewTarget(Vehicle *target) 
 {
-	this->targets.push_back(target);
+	this->targets.emplace(this->targets.begin(), target);
+}
+
+void PursuerAgent::removeTarget(int index)
+{
+	std::vector<Vehicle *>::iterator it = targets.begin() + index;
+	this->targets.erase(it);
 }
 
 

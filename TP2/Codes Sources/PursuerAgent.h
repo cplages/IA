@@ -34,6 +34,7 @@ public:
 	void findClosestTarget();
 
 	void setNewTarget(Vehicle *target);
+	void removeTarget(int index);
 
 
 	~PursuerAgent();
