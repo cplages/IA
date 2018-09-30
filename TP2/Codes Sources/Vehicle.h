@@ -38,6 +38,7 @@ private:
 
   //when true, smoothing is active
   bool                  m_bSmoothingOn;
+
   
 
   //keeps a track of the most recent update time. (some of the

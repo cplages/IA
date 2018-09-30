@@ -64,6 +64,7 @@ private:
   bool  m_bRenderNeighbors;
   bool  m_bViewKeys;
   bool  m_bShowCellSpaceInfo;
+  bool  m_bHumanControlled;
 
 
   void CreateObstacles();
@@ -103,6 +104,7 @@ public:
 
   //handle WM_COMMAND messages
   void        HandleKeyPresses(WPARAM wParam);
+  void		  SetupMenuItems(WPARAM wParam, HWND hwnd);
   void        HandleMenuItems(WPARAM wParam, HWND hwnd);
   
   void        TogglePause(){m_bPaused = !m_bPaused;}
@@ -132,6 +134,8 @@ public:
   void  ToggleViewKeys(){m_bViewKeys = !m_bViewKeys;}
   bool  ViewKeys()const{return m_bViewKeys;}
 
+  void  ToggleHumanControlled() { m_bHumanControlled = !m_bHumanControlled; }
+  bool  HumanControlled()const { return m_bHumanControlled; }
 };
 
 
