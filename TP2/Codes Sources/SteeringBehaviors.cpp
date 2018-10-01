@@ -1458,29 +1458,34 @@ Vector2D SteeringBehavior::OffsetPursuit(const Vehicle*  leader,
 
 Vector2D SteeringBehavior::Human()
 {
-	Vector2D direction;
+	Vector2D actual_direction = m_pVehicle->Heading();
+	Vector2D new_direction;
 
 	if (KEYDOWN(VK_UP))
 	{
-		direction = Vector2D(0, 10);
+		new_direction = actual_direction;
 		OutputDebugString("up\n");
 	}
 	if (KEYDOWN(VK_DOWN))
 	{
-		direction = Vector2D(0, -10);
+		new_direction = actual_direction * -1; 
 		OutputDebugString("down\n");
 	}
 	if (KEYDOWN(VK_LEFT))
 	{
-		direction = Vector2D(-10, 0);
+		//rotation to left
+		new_direction = Vector2D((actual_direction.y), -(actual_direction.x));
 		OutputDebugString("left\n");
 	}
 	if (KEYDOWN(VK_RIGHT))
 	{
-		direction = Vector2D(10, 0);
+		//rotation to right
+		new_direction = Vector2D(-(actual_direction.y), (actual_direction.x));
 		OutputDebugString("right\n");
 	}
-	return direction;
+
+	new_direction *= m_pVehicle->MaxSpeed();
+	return (new_direction - m_pVehicle->Velocity());
 }
 //----------------------------- RenderAids -------------------------------
 //
