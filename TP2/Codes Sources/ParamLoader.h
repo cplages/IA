@@ -30,7 +30,8 @@ private:
 		SteeringForceTweaker = GetNextParameterFloat();
 		MaxSteeringForce = GetNextParameterFloat() * SteeringForceTweaker;
 		MaxSpeed = GetNextParameterFloat();
-		OffsetPursuit = GetNextParameterFloat();
+		OffsetPursuitX = GetNextParameterFloat();
+		OffsetPursuitY = GetNextParameterFloat();
 		VehicleMass = GetNextParameterFloat();
 		VehicleScale = GetNextParameterFloat();
 
@@ -94,7 +95,8 @@ public:
 
 	double MaxSteeringForce;
 	double MaxSpeed;
-	double OffsetPursuit;
+	double OffsetPursuitX;
+	double OffsetPursuitY;
 	double VehicleMass;
 
 	double VehicleScale;
@@ -139,7 +141,6 @@ public:
 	double prEvade;
 	double prHide;
 	double prArrive;
-
 };
 
 

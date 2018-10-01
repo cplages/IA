@@ -1464,29 +1464,56 @@ Vector2D SteeringBehavior::Human()
 	if (KEYDOWN(VK_UP))
 	{
 		new_direction = actual_direction;
-		OutputDebugString("up\n");
 	}
 	if (KEYDOWN(VK_DOWN))
 	{
 		new_direction = actual_direction * -1; 
-		OutputDebugString("down\n");
 	}
 	if (KEYDOWN(VK_LEFT))
 	{
 		//rotation to left
 		new_direction = Vector2D((actual_direction.y), -(actual_direction.x));
-		OutputDebugString("left\n");
 	}
 	if (KEYDOWN(VK_RIGHT))
 	{
 		//rotation to right
 		new_direction = Vector2D(-(actual_direction.y), (actual_direction.x));
-		OutputDebugString("right\n");
 	}
 
 	new_direction *= m_pVehicle->MaxSpeed();
 	return (new_direction - m_pVehicle->Velocity());
 }
+
+
+//Vector2D SteeringBehavior::Human()
+//{
+//	Vector2D actual_direction = m_pVehicle->Heading();
+//	Vector2D new_direction = Vector2D(0, 0);
+//
+//	if (KEYDOWN(VK_UP))
+//	{
+//		new_direction += actual_direction;
+//	}
+//	if (KEYDOWN(VK_DOWN))
+//	{
+//		new_direction += actual_direction * -1;
+//	}
+//	if (KEYDOWN(VK_LEFT))
+//	{
+//		//rotation to left
+//		new_direction += Vector2D((actual_direction.y), -(actual_direction.x));
+//	}
+//	if (KEYDOWN(VK_RIGHT))
+//	{
+//		//rotation to right
+//		new_direction += Vector2D(-(actual_direction.y), (actual_direction.x));
+//	}
+//
+//	new_direction *= m_pVehicle->MaxSpeed();
+//	return new_direction;
+//}
+
+
 //----------------------------- RenderAids -------------------------------
 //
 //------------------------------------------------------------------------
@@ -1526,7 +1553,8 @@ void SteeringBehavior::RenderAids()
 	{
 		gdi->TextAtPos(5, NextSlot, "MaxForce(Ins/Del):"); gdi->TextAtPos(160, NextSlot, ttos(Prm.MaxSteeringForce / Prm.SteeringForceTweaker)); NextSlot += SlotSize;
 		gdi->TextAtPos(5, NextSlot, "MaxSpeed(Home/End):"); gdi->TextAtPos(160, NextSlot, ttos(Prm.MaxSpeed)); NextSlot += SlotSize;
-		gdi->TextAtPos(5, NextSlot, "OffsetPursuit(E/J):"); gdi->TextAtPos(160, NextSlot, ttos(Prm.OffsetPursuit)); NextSlot += SlotSize;
+		gdi->TextAtPos(5, NextSlot, "OffsetX(E/J):"); gdi->TextAtPos(160, NextSlot, ttos(Prm.OffsetPursuitX)); NextSlot += SlotSize;
+		gdi->TextAtPos(5, NextSlot, "OffsetY(T/W):"); gdi->TextAtPos(160, NextSlot, ttos(Prm.OffsetPursuitY)); NextSlot += SlotSize;
 		gdi->TextAtPos(5, NextSlot, "NumAgents(M/Q):"); gdi->TextAtPos(160, NextSlot, ttos(Prm.NumPursuerAgents)); NextSlot += SlotSize;
 		if (!isHumanOn()){gdi->TextAtPos(5, NextSlot, "NumLeaders(K/L):"); gdi->TextAtPos(160, NextSlot, ttos(Prm.NumLeaders)); NextSlot += SlotSize;}
 	}
@@ -1539,17 +1567,30 @@ void SteeringBehavior::RenderAids()
 		gdi->Line(m_pVehicle->Pos(), m_pVehicle->Pos() + F);
 	}
 
-	// offset
+	// offset X
 	if (KEYDOWN('E'))
 	{
-		Prm.OffsetPursuit -= 1.0f * m_pVehicle->TimeElapsed();
-		if (Prm.OffsetPursuit < 1.0f) Prm.OffsetPursuit = 1.0f;
-		m_pVehicle->Steering()->SetOffset(Vector2D(Prm.OffsetPursuit, Prm.OffsetPursuit));
+		Prm.OffsetPursuitX -= 1.0f * m_pVehicle->TimeElapsed();
+		if (abs(Prm.OffsetPursuitX) < 0.1f) Prm.OffsetPursuitX = (Prm.OffsetPursuitY == 0.0f) ? 0.1f * (-signbit(Prm.OffsetPursuitX)*2+1) : 0.0f;
+		m_pVehicle->Steering()->SetOffset(Vector2D(Prm.OffsetPursuitX, Prm.OffsetPursuitY));
 	}
 	if (KEYDOWN('J'))
 	{
-		Prm.OffsetPursuit += 1.0f * m_pVehicle->TimeElapsed();
-		m_pVehicle->Steering()->SetOffset(Vector2D(Prm.OffsetPursuit, Prm.OffsetPursuit));
+		Prm.OffsetPursuitX += 1.0f * m_pVehicle->TimeElapsed();
+		m_pVehicle->Steering()->SetOffset(Vector2D(Prm.OffsetPursuitX, Prm.OffsetPursuitY));
+	}
+
+	// offset Y
+	if (KEYDOWN('T'))
+	{
+		Prm.OffsetPursuitY -= 1.0f * m_pVehicle->TimeElapsed();
+		if (abs(Prm.OffsetPursuitY) < 0.1f) Prm.OffsetPursuitY = (Prm.OffsetPursuitX == 0.0f) ? 0.1f * (-signbit(Prm.OffsetPursuitY) * 2 + 1) : 0.0f;
+		m_pVehicle->Steering()->SetOffset(Vector2D(Prm.OffsetPursuitX, Prm.OffsetPursuitY));
+	}
+	if (KEYDOWN('W'))
+	{
+		Prm.OffsetPursuitY += 1.0f * m_pVehicle->TimeElapsed();
+		m_pVehicle->Steering()->SetOffset(Vector2D(Prm.OffsetPursuitX, Prm.OffsetPursuitY));
 	}
 
 

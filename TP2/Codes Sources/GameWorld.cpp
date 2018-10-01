@@ -71,7 +71,7 @@ GameWorld::GameWorld(int cx, int cy) :
 	}
 
 	//offset for the pursuer agents.
-	Vector2D offset = Vector2D(Prm.OffsetPursuit, Prm.OffsetPursuit);
+	Vector2D offset = Vector2D(Prm.OffsetPursuitX, Prm.OffsetPursuitY);
 
 	// setup the pursuer agents :
 	// the first pursuer agent is configured to follow the nearest leader
@@ -330,7 +330,7 @@ void GameWorld::HandleKeyPresses(WPARAM wParam)
 			delete oldLeader;
 
 			// remove the leader from the first pursuer agent
-			((PursuerAgent*)m_Vehicles[Prm.NumLeaders])->removeTarget(0);
+			if (Prm.NumPursuerAgents > 0) ((PursuerAgent*)m_Vehicles[Prm.NumLeaders])->removeTarget(0);
 		}
 	}
 	break;
@@ -362,7 +362,7 @@ void GameWorld::HandleKeyPresses(WPARAM wParam)
 		newLeader->SetMaxSpeed(70);
 		
 		// we precise to the first pursuer agent that there is a new leader
-		((PursuerAgent*)m_Vehicles[Prm.NumLeaders])->setNewTarget(newLeader);
+		if (Prm.NumPursuerAgents > 0) ((PursuerAgent*)m_Vehicles[Prm.NumLeaders])->setNewTarget(newLeader);
 	}
 	break;
 
@@ -386,7 +386,7 @@ void GameWorld::HandleKeyPresses(WPARAM wParam)
 	case 'Q':
 	{
 		//offset for the pursuer agents.
-		Vector2D offset = Vector2D(Prm.OffsetPursuit, Prm.OffsetPursuit);
+		Vector2D offset = Vector2D(Prm.OffsetPursuitX, Prm.OffsetPursuitY);
 
 		Vector2D SpawnPos = Vector2D(m_cxClient / 2.0 + RandomClamped()*m_cxClient / 2.0,
 			m_cyClient / 2.0 + RandomClamped()*m_cyClient / 2.0);

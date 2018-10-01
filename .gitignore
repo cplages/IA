@@ -142,3 +142,15 @@ TP2/Codes Sources/Debug/Vehicle\.obj
 *.opendb
 
 *.ipch
+
+\.vs/IA/v15/\.suo
+
+\.vs/IA/v15/Browse\.VC\.db
+
+\.vs/slnx\.sqlite
+
+\.vs/ProjectSettings\.json
+
+\.vs/VSWorkspaceState\.json
+
+TP2/Codes Sources/Script1\.aps
