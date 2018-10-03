@@ -34,6 +34,7 @@ void PursuerAgent::findClosestTarget()
 {
 	if (targets.size() > 1) 
 	{
+		//looks for the min distance between the current pursuer and the leaders.
 		Vehicle *closer_target = (*targets.begin());
 		double distance_min = (this->Pos()).Distance(closer_target->Pos()) ;
 		for(std::vector<Vehicle *>::iterator it = targets.begin() + 1 ; it != targets.end(); ++it) 
@@ -44,7 +45,7 @@ void PursuerAgent::findClosestTarget()
 				distance_min = tmp;
 			}
 		}
-
+		//set the target to the closest leader.
 		this->mySteering->SetTargetAgent1(closer_target);
 	}
 }

@@ -72,7 +72,7 @@ public:
 
   ~Vehicle();
 
-  //updates the vehicle's position and orientation
+  //updates the vehicle's position and orientation, put in virtual to make polymorphism works.
   virtual void        Update(double time_elapsed);
 
   void        Render(int vehicleColor);

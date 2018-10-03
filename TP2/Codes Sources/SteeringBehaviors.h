@@ -241,7 +241,7 @@ private:
   Vector2D AlignmentPlus(const std::vector<Vehicle*> &agents);
 
   // -- Human -- //
-
+  //this returns a steering force according to player's inputs.
   Vector2D Human();
     /* .......................................................
 

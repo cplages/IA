@@ -3,12 +3,13 @@
 
 #include "Vehicle.h"
 
-/* class describing a vehicule type which is following another vehicle from a distance given(offset) and keep a distance (offset) between itself and it neighbors.*/
+/* class describing a vehicule type which is following the nearest leader from a distance given(offset) and keep a distance (offset) between itself and it neighbors.*/
 
 class PursuerAgent : public Vehicle
 {
 private:
 	SteeringBehavior *mySteering;
+	//list of leaders 
 	std::vector<Vehicle *> targets;
 
 public:
@@ -31,6 +32,7 @@ public:
 	Vector2D getOffset();
 	void setOffset(Vector2D offset);
 
+	//find the closest leader to following him.
 	void findClosestTarget();
 
 	void setNewTarget(Vehicle *target);

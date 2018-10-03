@@ -74,7 +74,14 @@ public:
 
 	static ParamLoader* Instance();
 
+
+	/* 
+	   number of pursuer and leader agents replace the number of agents. 
+	   Since it is not possible to another type of agent, the number total is just equal to the addition of both numbers.
+	*/
+	//number of pursuer agents
 	int	NumPursuerAgents;
+	//number of leader agents
 	int NumLeaders;
 	int	NumObstacles;
 	double MinObstacleRadius;
@@ -95,6 +102,7 @@ public:
 
 	double MaxSteeringForce;
 	double MaxSpeed;
+	//length of offset.
 	double OffsetPursuitX;
 	double OffsetPursuitY;
 	double VehicleMass;

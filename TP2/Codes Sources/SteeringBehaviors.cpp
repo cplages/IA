@@ -1456,62 +1456,41 @@ Vector2D SteeringBehavior::OffsetPursuit(const Vehicle*  leader,
 //for receiving keyboard input from user
 #define KEYDOWN(vk_code) ((GetAsyncKeyState(vk_code) & 0x8000) ? 1 : 0)
 
+
+//------------------------- Human -------------------------------
+//
+//  Produces a steering force coming from player's inputs.
+// 
+//------------------------------------------------------------------------
 Vector2D SteeringBehavior::Human()
 {
 	Vector2D actual_direction = m_pVehicle->Heading();
-	Vector2D new_direction;
+	Vector2D new_direction = Vector2D(0, 0);
 
 	if (KEYDOWN(VK_UP))
 	{
-		new_direction = actual_direction;
+		//forward
+		new_direction += actual_direction;
 	}
 	if (KEYDOWN(VK_DOWN))
 	{
-		new_direction = actual_direction * -1; 
+		//slow it down
+		new_direction += actual_direction * -1;
 	}
 	if (KEYDOWN(VK_LEFT))
 	{
 		//rotation to left
-		new_direction = Vector2D((actual_direction.y), -(actual_direction.x));
+		new_direction += Vector2D((actual_direction.y), -(actual_direction.x));
 	}
 	if (KEYDOWN(VK_RIGHT))
 	{
 		//rotation to right
-		new_direction = Vector2D(-(actual_direction.y), (actual_direction.x));
+		new_direction += Vector2D(-(actual_direction.y), (actual_direction.x));
 	}
 
 	new_direction *= m_pVehicle->MaxSpeed();
-	return (new_direction - m_pVehicle->Velocity());
+	return (new_direction - m_pVehicle->Velocity());;
 }
-
-
-//Vector2D SteeringBehavior::Human()
-//{
-//	Vector2D actual_direction = m_pVehicle->Heading();
-//	Vector2D new_direction = Vector2D(0, 0);
-//
-//	if (KEYDOWN(VK_UP))
-//	{
-//		new_direction += actual_direction;
-//	}
-//	if (KEYDOWN(VK_DOWN))
-//	{
-//		new_direction += actual_direction * -1;
-//	}
-//	if (KEYDOWN(VK_LEFT))
-//	{
-//		//rotation to left
-//		new_direction += Vector2D((actual_direction.y), -(actual_direction.x));
-//	}
-//	if (KEYDOWN(VK_RIGHT))
-//	{
-//		//rotation to right
-//		new_direction += Vector2D(-(actual_direction.y), (actual_direction.x));
-//	}
-//
-//	new_direction *= m_pVehicle->MaxSpeed();
-//	return new_direction;
-//}
 
 
 //----------------------------- RenderAids -------------------------------
@@ -1547,8 +1526,7 @@ void SteeringBehavior::RenderAids()
 		m_pVehicle->SetMaxSpeed(Prm.MaxSpeed);
 	}
 
-	// Gère l'affichage des différents paramètres modifiables
-	// (Très peu logique d'avoir foutu dans cette classe d'après moi...)
+	// Handles parameters display
 	if (m_pVehicle->ID() == 0)
 	{
 		gdi->TextAtPos(5, NextSlot, "MaxForce(Ins/Del):"); gdi->TextAtPos(160, NextSlot, ttos(Prm.MaxSteeringForce / Prm.SteeringForceTweaker)); NextSlot += SlotSize;

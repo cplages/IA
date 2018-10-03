@@ -272,7 +272,7 @@ inline void CellSpacePartition<entity>::UpdateEntity(const entity&  ent,
 
 //----------------------- RemoveEntity -----------------------------------
 //
-//  Used to remove the entitys to the data structure
+//  Used to remove the entities to the data structure
 //------------------------------------------------------------------------
 template<class entity>
 inline void CellSpacePartition<entity>::RemoveEntity(const entity& ent)

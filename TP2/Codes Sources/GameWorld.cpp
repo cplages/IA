@@ -42,6 +42,7 @@ GameWorld::GameWorld(int cx, int cy) :
 	m_bRenderNeighbors(false),
 	m_bViewKeys(true),
 	m_bShowCellSpaceInfo(false),
+	//add human option, it is not toggled at first.
 	m_bHumanControlled(false)
 {
 	//setup the spatial subdivision class
@@ -50,6 +51,7 @@ GameWorld::GameWorld(int cx, int cy) :
 	double border = 30;
 	m_pPath = new Path(5, border, border, cx - border, cy - border, true);
 
+	//create NumLeaders leaders.
 	for (int i = 0; i < Prm.NumLeaders; ++i)
 	{
 		//determine a random starting position
@@ -98,7 +100,7 @@ GameWorld::GameWorld(int cx, int cy) :
 	m_Vehicles.push_back(pursuer);
 	m_pCellSpace->AddEntity(pursuer);
 
-	// after, configure all other pursuer agent
+	// after, configure all other pursuer agents
 	for (int a = 0; a < Prm.NumPursuerAgents - 1; a++)
 	{
 		//determine a random starting position
@@ -132,17 +134,9 @@ GameWorld::GameWorld(int cx, int cy) :
 		m_Vehicles[i]->SetMaxSpeed(70);
 	}
 
-	/*
-	 for (int i=0; i<Prm.NumAgents-1; ++i)
-	{
-	  m_Vehicles[i]->Steering()->EvadeOn(m_Vehicles[Prm.NumAgents-1]);
-
-	}*/
 #endif
 
-	//create any obstacles or walls
-	//CreateObstacles();
-	//CreateWalls();
+
 }
 
 
@@ -316,6 +310,7 @@ void GameWorld::HandleKeyPresses(WPARAM wParam)
 	// num leaders
 	case 'K':
 	{
+		//if human parameter on, go away
 		if (HumanControlled()) break;
 
 		if (Prm.NumLeaders > 1)
@@ -336,6 +331,7 @@ void GameWorld::HandleKeyPresses(WPARAM wParam)
 	break;
 	case 'L':
 	{
+		//if human parameter on, go away
 		if (HumanControlled()) break;
 
 		Prm.NumLeaders ++;
@@ -355,6 +351,7 @@ void GameWorld::HandleKeyPresses(WPARAM wParam)
 			Prm.VehicleScale,
 			false);
 
+		//put new leader in the first position of the list.
 		m_Vehicles.emplace(m_Vehicles.begin(), newLeader);
 		m_pCellSpace->AddEntity(newLeader);
 
@@ -462,9 +459,8 @@ void GameWorld::HandleKeyPresses(WPARAM wParam)
 	}//end switch
 }
 
-//-------------------------- SetupMenuItems ------------------------------
-// Cette fonction est appelée à la création de la fenetre windows
-// pour cocher les bons paramètres
+//-------------------------- InitializeMenuItems ------------------------------
+// when the window is displayed, toggle the right parameters according to their values.
 void GameWorld::InitializeMenuItems(WPARAM wParam, HWND hwnd)
 {
 	CheckMenuItemAppropriately(hwnd, ID_VIEW_KEYS, m_bViewKeys);
@@ -666,7 +662,7 @@ void GameWorld::HandleMenuItems(WPARAM wParam, HWND hwnd)
 	}
 
 	break;
-
+	//add human toggle in the display.
 	case ID_MENU_HUMAN:
 	{
 		ToggleHumanControlled();
@@ -688,10 +684,10 @@ void GameWorld::HandleMenuItems(WPARAM wParam, HWND hwnd)
 			((PursuerAgent*)m_Vehicles[1])->removeTarget(0);
 		}
 
-		// Au final en cochant ou décochant HumanControlled on aura un seul leader
+		// if the human mode is on, there is only one leader agent
 		Prm.NumLeaders = 1;
 
-		// Modifie le comportement du leader restant
+		// change leader behavior to human.
 		((LeaderAgent*)m_Vehicles[0])->SetHumanBehaviour(HumanControlled());
 	}
 
@@ -725,6 +721,7 @@ void GameWorld::Render()
 	//render the agents
 	for (unsigned int a = 0; a < m_Vehicles.size(); ++a)
 	{
+		//render leader according to the controlled used.
 		if (HumanControlled())
 		{
 			if (a == 0)

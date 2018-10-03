@@ -3,8 +3,10 @@
 
 #include "Vehicle.h"
 
-/*a vehicle which is just wandering */
-
+/*
+//a vehicle which is just wandering 
+//could be control by human if the parameter is on.
+*/
 class LeaderAgent : public Vehicle
 {
 private:
