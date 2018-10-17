@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{d525af2a-f7ca-42ff-a3ee-811991fbd1cf}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{3526e0cf-105b-48ae-96e2-1243e4293834}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{bf2e8999-aaac-4742-972f-78c7e85f5284}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+    <Filter Include="graph related files">
+      <UniqueIdentifier>{bfd30326-b4f6-4f6b-b0f2-e12f4ba68a66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common">
+      <UniqueIdentifier>{36a7f05d-ce2f-4d86-a386-f1b733d46159}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="misc">
+      <UniqueIdentifier>{2205d780-5aa3-4499-95dc-17c19d27932f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="time">
+      <UniqueIdentifier>{4f5d1e78-42a7-4e37-ad32-5ed37e0d0b2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2D">
+      <UniqueIdentifier>{3dee6c9e-b0c1-49a7-bcbc-3fea108b91ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="graph">
+      <UniqueIdentifier>{3df1870d-d22c-42e5-beda-fc4d79cb1c58}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Pathfinder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\misc\Cgdi.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\Time\PrecisionTimer.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Common\misc\WindowUtils.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="2D\Vector2d.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\Cgdi.cpp">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\FrameCounter.cpp">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\iniFileLoaderBase.cpp">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="misc\WindowUtils.cpp">
+      <Filter>misc</Filter>
+    </ClCompile>
+    <ClCompile Include="time\CrudeTimer.cpp">
+      <Filter>time</Filter>
+    </ClCompile>
+    <ClCompile Include="time\PrecisionTimer.cpp">
+      <Filter>time</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="constants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Pathfinder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Graph\AStarHeuristicPolicies.h">
+      <Filter>graph related files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Graph\GraphAlgorithms.h">
+      <Filter>graph related files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Graph\GraphEdgeTypes.h">
+      <Filter>graph related files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Graph\GraphNodeTypes.h">
+      <Filter>graph related files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Graph\HandyGraphFunctions.h">
+      <Filter>graph related files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Graph\NodeTypeEnumerations.h">
+      <Filter>graph related files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Graph\SparseGraph.h">
+      <Filter>graph related files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Cgdi.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\misc\Cgdi.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Time\PrecisionTimer.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\misc\PriorityQueue.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\PriorityQueue.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Patterns\Singleton.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\misc\Stream_Utility_Functions.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\misc\utils.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\utils.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\2D\Vector2D.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\misc\WindowUtils.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="misc\autolist.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="misc\CellSpacePartition.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="misc\Cgdi.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="misc\ConsoleUtils.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="misc\FrameCounter.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="misc\iniFileLoaderBase.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="misc\PriorityQueue.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="misc\Smoother.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="misc\Stream_Utility_Functions.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="misc\TypeToString.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="misc\utils.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="misc\WindowUtils.h">
+      <Filter>misc</Filter>
+    </ClInclude>
+    <ClInclude Include="2D\C2DMatrix.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="2D\geometry.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="2D\InvertedAABBox2D.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="2D\Transformations.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="2D\Vector2D.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="2D\Wall2D.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="2D\WallIntersectionTests.h">
+      <Filter>2D</Filter>
+    </ClInclude>
+    <ClInclude Include="time\CrudeTimer.h">
+      <Filter>time</Filter>
+    </ClInclude>
+    <ClInclude Include="time\PrecisionTimer.h">
+      <Filter>time</Filter>
+    </ClInclude>
+    <ClInclude Include="time\Regulator.h">
+      <Filter>time</Filter>
+    </ClInclude>
+    <ClInclude Include="graph\AStarHeuristicPolicies.h">
+      <Filter>graph</Filter>
+    </ClInclude>
+    <ClInclude Include="graph\GraphAlgorithms.h">
+      <Filter>graph</Filter>
+    </ClInclude>
+    <ClInclude Include="graph\GraphEdgeTypes.h">
+      <Filter>graph</Filter>
+    </ClInclude>
+    <ClInclude Include="graph\GraphNodeTypes.h">
+      <Filter>graph</Filter>
+    </ClInclude>
+    <ClInclude Include="graph\HandyGraphFunctions.h">
+      <Filter>graph</Filter>
+    </ClInclude>
+    <ClInclude Include="graph\NodeTypeEnumerations.h">
+      <Filter>graph</Filter>
+    </ClInclude>
+    <ClInclude Include="graph\SparseGraph.h">
+      <Filter>graph</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon1.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="toolbar1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="toolbar.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
