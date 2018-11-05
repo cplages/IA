@@ -1,16 +1,18 @@
 #ifndef ASTAR_HEURISTIC_POLICIES_H
 #define ASTAR_HEURISTIC_POLICIES_H
+
+#include "stdlib.h"
 //-----------------------------------------------------------------------------
 //  Desc:   class templates defining a heuristic policy for use with the A*
 //          search algorithm
 //-----------------------------------------------------------------------------
 #include "misc/utils.h"
-
 //-----------------------------------------------------------------------------
 //the euclidian heuristic (straight-line distance)
 //-----------------------------------------------------------------------------
 class Heuristic_Euclid 
 {
+	
 public:
 
   Heuristic_Euclid(){}
@@ -59,7 +61,24 @@ public:
   }
 };
 
+//-----------------------------------------------------------------------------
+//the manhattan heuristic (sum of the horizontal and vertical distance)
+//-----------------------------------------------------------------------------
+class Heuristic_Manhattan
+{
+public:
+	Heuristic_Manhattan() {}
 
+	//calculate the straight line distance from node nd1 to node nd2
+	template <class graph_type>
+	static double Calculate(const graph_type& G, int nd1, int nd2)
+	{
+		double x_distance = abs(G.GetNode(nd1).Pos().x - G.GetNode(nd2).Pos().x);
+		double y_distance = abs(G.GetNode(nd1).Pos().y- G.GetNode(nd2).Pos().y);
+
+		return x_distance + y_distance;
+	}
+};
 
 
 

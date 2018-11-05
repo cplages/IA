@@ -35,7 +35,8 @@ public:
   enum algorithm_type
   {
     non,
-    search_astar,
+    search_astar_euclidian,
+	search_astar_manhattan,
     search_bfs,
     search_dfs,
     search_dijkstra
@@ -97,6 +98,8 @@ private:
   //complete
   double                        m_dTimeTaken;
   
+  //maxCost before giving up the search
+  double						m_maxCost;
   //this calls the appropriate algorithm
   void  UpdateAlgorithm();
 
@@ -107,7 +110,7 @@ private:
 
 public:
 
-  Pathfinder():m_bStart(false),
+  Pathfinder(double maxCost):m_bStart(false),
                 m_bFinish(false),
                 m_bShowGraph(false),
                 m_bShowTiles(true),
@@ -122,7 +125,8 @@ public:
                 m_icxClient(0),
                 m_icyClient(0),
                 m_dCostToTarget(0.0),
-                m_pGraph(NULL)
+                m_pGraph(NULL),
+				m_maxCost(maxCost)
   {}
 
   ~Pathfinder(){delete m_pGraph;}
@@ -139,7 +143,8 @@ public:
   void CreatePathDFS();
   void CreatePathBFS();
   void CreatePathDijkstra();
-  void CreatePathAStar();
+  void CreatePathAStarEuclid(double maxCost);
+  void CreatePathAStarManhattan(double maxCost);
   void MinSpanningTree();
 
   //if m_bShowGraph is true the graph will be rendered
@@ -167,6 +172,8 @@ public:
 
   void Save( char* FileName);
   void Load( char* FileName);
+
+  void set_maxCost(double maxCost);
 
 };
 

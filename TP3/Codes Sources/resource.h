@@ -15,7 +15,8 @@
 #define ID_BUTTON_DFS                   40008
 #define ID_BUTTON_BFS                   40009
 #define ID_BUTTON_DIJKSTRA              40010
-#define ID_BUTTON_ASTAR                 40011
+#define ID_BUTTON_ASTAR_EUCLID          40011
+#define ID_BUTTON_ASTAR_MANHATTAN		40012
 #define IDM_VIEW_GRAPH                  40013
 #define IDM_VIEW_TILES                  40014
 #define ID_MENU_SAVEAS                  40019

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pathfinder", "Pathfinder.vcxproj", "{3473E0C4-813E-4F21-942A-9921B7D01D7B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pathfinder", "Pathfinder.vcxproj", "{DFCF4066-A58F-4C76-95AB-5D5C5A5B9354}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3473E0C4-813E-4F21-942A-9921B7D01D7B}.Debug|x86.ActiveCfg = Debug|Win32
-		{3473E0C4-813E-4F21-942A-9921B7D01D7B}.Debug|x86.Build.0 = Debug|Win32
-		{3473E0C4-813E-4F21-942A-9921B7D01D7B}.Release|x86.ActiveCfg = Release|Win32
-		{3473E0C4-813E-4F21-942A-9921B7D01D7B}.Release|x86.Build.0 = Release|Win32
+		{DFCF4066-A58F-4C76-95AB-5D5C5A5B9354}.Debug|x86.ActiveCfg = Debug|Win32
+		{DFCF4066-A58F-4C76-95AB-5D5C5A5B9354}.Debug|x86.Build.0 = Debug|Win32
+		{DFCF4066-A58F-4C76-95AB-5D5C5A5B9354}.Release|x86.ActiveCfg = Release|Win32
+		{DFCF4066-A58F-4C76-95AB-5D5C5A5B9354}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {A5E6D4C0-36C6-43A1-9AE3-B1CBE368B86A}
+		SolutionGuid = {45166063-4723-49A6-990A-ABF24E68B882}
 	EndGlobalSection
 EndGlobal

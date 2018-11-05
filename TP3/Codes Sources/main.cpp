@@ -2,6 +2,7 @@
 
 #include <windows.h>
 #include <time.h>
+#include <ostream>
 
 //need to include this for the toolbar stuff
 #include <commctrl.h>
@@ -32,6 +33,7 @@ Pathfinder* g_Pathfinder;
 //global toolbar handle
 HWND g_hwndToolbar;
 
+double maxCost = 500;
 //------------------------- RedrawDisplay ---------------------------------
 //
 //  Call this to refresh the client window
@@ -125,7 +127,7 @@ LRESULT CALLBACK WindowProc (HWND   hwnd,
          ReleaseDC(hwnd, hdc);  
          
          //create the controller
-         g_Pathfinder = new Pathfinder();
+         g_Pathfinder = new Pathfinder(maxCost);
 
          CheckMenuItemAppropriately(hwnd, IDM_VIEW_TILES, g_Pathfinder->isShowTilesOn());
          CheckMenuItemAppropriately(hwnd, IDM_VIEW_GRAPH, g_Pathfinder->isShowGraphOn());
@@ -178,6 +180,7 @@ LRESULT CALLBACK WindowProc (HWND   hwnd,
 
       break;
 
+	
     case WM_KEYUP:
       {
         switch(wParam)
@@ -202,6 +205,26 @@ LRESULT CALLBACK WindowProc (HWND   hwnd,
 
       break;
 
+	//change max cost value
+	case WM_KEYDOWN:
+	{
+		switch (wParam)
+		{
+
+		case 'Q':
+			maxCost -= 1;
+			g_Pathfinder->set_maxCost(maxCost);
+			break;
+		case 'D':
+			maxCost += 1;
+			g_Pathfinder->set_maxCost(maxCost);
+			break;
+
+		}//end switch
+
+		RedrawWindowRect(hwnd, false, rectClientWindow);
+	}
+		break;
       
     case WM_LBUTTONDOWN:
     {
@@ -289,11 +312,16 @@ LRESULT CALLBACK WindowProc (HWND   hwnd,
 
         break;
 
-      case ID_BUTTON_ASTAR:
+      case ID_BUTTON_ASTAR_EUCLID:
 
-        g_Pathfinder->CreatePathAStar(); CurrentSearchButton = ID_BUTTON_ASTAR; break;
+        g_Pathfinder->CreatePathAStarEuclid(maxCost); CurrentSearchButton = ID_BUTTON_ASTAR_EUCLID; break;
 
         break;
+
+	  case ID_BUTTON_ASTAR_MANHATTAN:
+
+		  g_Pathfinder->CreatePathAStarManhattan(maxCost); CurrentSearchButton = ID_BUTTON_ASTAR_MANHATTAN; break;
+      break;
 
       case ID_MENU_LOAD:
           
@@ -381,9 +409,7 @@ LRESULT CALLBACK WindowProc (HWND   hwnd,
       {
  		       
          PAINTSTRUCT ps;
-          
-         BeginPaint (hwnd, &ps);
-
+		 HDC hdc = BeginPaint(hwnd, &ps);
         //fill the backbuffer with white
          BitBlt(hdcBackBuffer,
                 0,
@@ -401,10 +427,13 @@ LRESULT CALLBACK WindowProc (HWND   hwnd,
 
         gdi->StopDrawing(hdcBackBuffer);
 
+		char * tmp_buffer = new char[100];
+		snprintf(tmp_buffer, 100, "max cost value : %G (Q/D to change the value)", maxCost);
+		LPSTR szMessage = tmp_buffer;
 
          //now blit backbuffer to front
 			   BitBlt(ps.hdc, 0, 0, cxClient, cyClient, hdcBackBuffer, 0, 0, SRCCOPY); 
-          
+		TextOut(hdc, 120, 0, szMessage, strlen(szMessage));
          EndPaint (hwnd, &ps);
 
       }
@@ -471,7 +500,7 @@ LRESULT CALLBACK WindowProc (HWND   hwnd,
 HWND CreateToolBar(HWND hwndParent, HINSTANCE hinstMain)
 {
 
-  const int NumButtons = 11;
+  const int NumButtons = 12;
   
   //load in the common ctrls from the dll
   INITCOMMONCONTROLSEX cc;
@@ -562,7 +591,7 @@ HWND CreateToolBar(HWND hwndParent, HINSTANCE hinstMain)
   button[5].iString   = NULL;
 
   //this creates a separater
-  button[6].iBitmap   = 265;
+  button[6].iBitmap   = 240;
   button[6].idCommand = 0;
   button[6].fsState   = NULL;
   button[6].fsStyle   = TBSTYLE_SEP;
@@ -591,11 +620,18 @@ HWND CreateToolBar(HWND hwndParent, HINSTANCE hinstMain)
   button[9].iString   = NULL;
 
   button[10].iBitmap   = 9;
-  button[10].idCommand = ID_BUTTON_ASTAR;
+  button[10].idCommand = ID_BUTTON_ASTAR_EUCLID;
   button[10].fsState   = TBSTATE_ENABLED;
   button[10].fsStyle   = TBSTYLE_CHECKGROUP;
   button[10].dwData    = NULL;
   button[10].iString   = NULL;
+
+  button[11].iBitmap = 9;
+  button[11].idCommand = ID_BUTTON_ASTAR_MANHATTAN;
+  button[11].fsState = TBSTATE_ENABLED;
+  button[11].fsStyle = TBSTYLE_CHECKGROUP;
+  button[11].dwData = NULL;
+  button[11].iString = NULL;
 
 
 

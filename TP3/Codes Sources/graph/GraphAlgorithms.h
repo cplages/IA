@@ -534,6 +534,7 @@ private:
 
   //indexed into my node. Contains the 'real' accumulative cost to that node
   std::vector<double>             m_GCosts; 
+  double						  m_GMaxCost;
 
   //indexed into by node. Contains the cost from adding m_GCosts[n] to
   //the heuristic cost from n to the target node. This is the vector the
@@ -553,13 +554,14 @@ public:
 
   Graph_SearchAStar(graph_type &graph,
                     int   source,
-                    int   target):m_Graph(graph),
+                    int   target, double maxCost):m_Graph(graph),
                                   m_ShortestPathTree(graph.NumNodes()),                              
                                   m_SearchFrontier(graph.NumNodes()),
                                   m_GCosts(graph.NumNodes(), 0.0),
                                   m_FCosts(graph.NumNodes(), 0.0),
                                   m_iSource(source),
-                                  m_iTarget(target)
+                                  m_iTarget(target),
+								  m_GMaxCost(maxCost)
   {
     Search();   
   }
@@ -611,30 +613,34 @@ void Graph_SearchAStar<graph_type, heuristic>::Search()
       //calculate the 'real' cost to this node from the source (G)
       double GCost = m_GCosts[NextClosestNode] + pE->Cost();
 
-      //if the node has not been added to the frontier, add it and update
-      //the G and F costs
-      if (m_SearchFrontier[pE->To()] == NULL)
-      {
-        m_FCosts[pE->To()] = GCost + HCost;
-        m_GCosts[pE->To()] = GCost;
+	  //if the maxCost is reached don't search.
+	  if (GCost <= m_GMaxCost) 
+	  {
+		  //if the node has not been added to the frontier, add it and update
+		  //the G and F costs
+		  if (m_SearchFrontier[pE->To()] == NULL)
+		  {
+			  m_FCosts[pE->To()] = GCost + HCost;
+			  m_GCosts[pE->To()] = GCost;
 
-        pq.insert(pE->To());
+			  pq.insert(pE->To());
 
-        m_SearchFrontier[pE->To()] = pE;
-      }
+			  m_SearchFrontier[pE->To()] = pE;
+		  }
 
-      //if this node is already on the frontier but the cost to get here
-      //is cheaper than has been found previously, update the node
-      //costs and frontier accordingly.
-      else if ((GCost < m_GCosts[pE->To()]) && (m_ShortestPathTree[pE->To()]==NULL))
-      {
-        m_FCosts[pE->To()] = GCost + HCost;
-        m_GCosts[pE->To()] = GCost;
+		  //if this node is already on the frontier but the cost to get here
+		  //is cheaper than has been found previously, update the node
+		  //costs and frontier accordingly.
+		  else if ((GCost < m_GCosts[pE->To()]) && (m_ShortestPathTree[pE->To()] == NULL))
+		  {
+			  m_FCosts[pE->To()] = GCost + HCost;
+			  m_GCosts[pE->To()] = GCost;
 
-        pq.ChangePriority(pE->To());
+			  pq.ChangePriority(pE->To());
 
-        m_SearchFrontier[pE->To()] = pE;
-      }
+			  m_SearchFrontier[pE->To()] = pE;
+		  }
+	  }
     }
   }
 }

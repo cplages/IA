@@ -168,7 +168,8 @@ BEGIN
     ID_BUTTON_DFS           "Depth First Search"
     ID_BUTTON_BFS           "Best First Search"
     ID_BUTTON_DIJKSTRA      "Dijkstra's algorithm"
-    ID_BUTTON_ASTAR         "A*"
+    ID_BUTTON_ASTAR_EUCLID    "A* Euclid"
+	ID_BUTTON_ASTAR_MANHATTAN "A* Manhattan"
 END
 
 #endif    // English (U.K.) resources

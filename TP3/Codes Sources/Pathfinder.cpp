@@ -204,10 +204,13 @@ void Pathfinder::UpdateAlgorithm()
 
     CreatePathDijkstra(); break;
 
-  case search_astar:
+  case search_astar_euclidian:
     
-    CreatePathAStar(); break;
+    CreatePathAStarEuclid(m_maxCost); break;
 
+  case search_astar_manhattan:
+
+	  CreatePathAStarManhattan(m_maxCost); break;
   default: break;
   }
 }
@@ -307,10 +310,11 @@ void Pathfinder::CreatePathDijkstra()
 
 //--------------------------- CreatePathAStar ---------------------------
 //------------------------------------------------------------------------
-void Pathfinder::CreatePathAStar()
+//with euclidian heuristic
+void Pathfinder::CreatePathAStarEuclid(double maxCost)
 {
   //set current algorithm
-  m_CurrentAlgorithm = search_astar;
+  m_CurrentAlgorithm = search_astar_euclidian;
       
   //create and start a timer
   PrecisionTimer timer; timer.Start();
@@ -319,7 +323,7 @@ void Pathfinder::CreatePathAStar()
   typedef Graph_SearchAStar<NavGraph, Heuristic_Euclid> AStarSearch;
 
   //create an instance of the A* search using the Euclidean heuristic
-  AStarSearch AStar(*m_pGraph, m_iSourceCell, m_iTargetCell);
+  AStarSearch AStar(*m_pGraph, m_iSourceCell, m_iTargetCell, maxCost);
   
 
   //record the time taken  
@@ -330,6 +334,33 @@ void Pathfinder::CreatePathAStar()
   m_SubTree = AStar.GetSPT();
 
   m_dCostToTarget = AStar.GetCostToTarget();
+
+}
+
+//with manhattan heuristic
+void Pathfinder::CreatePathAStarManhattan(double maxCost)
+{
+	//set current algorithm
+	m_CurrentAlgorithm = search_astar_manhattan;
+
+	//create and start a timer
+	PrecisionTimer timer; timer.Start();
+
+	//create a couple of typedefs so the code will sit comfortably on the page   
+	typedef Graph_SearchAStar<NavGraph, Heuristic_Manhattan> AStarSearch;
+
+	//create an instance of the A* search using the Euclidean heuristic
+	AStarSearch AStar(*m_pGraph, m_iSourceCell, m_iTargetCell, maxCost);
+
+
+	//record the time taken  
+	m_dTimeTaken = timer.TimeElapsed();
+
+	m_Path = AStar.GetPathToTarget();
+
+	m_SubTree = AStar.GetSPT();
+
+	m_dCostToTarget = AStar.GetCostToTarget();
 
 }
 
@@ -409,7 +440,8 @@ std::string Pathfinder::GetNameOfCurrentSearchAlgorithm()const
   switch(m_CurrentAlgorithm)
   {
   case non: return "";
-  case search_astar: return "A Star";
+  case search_astar_euclidian: return "A Star Euclid Heuristic";
+  case search_astar_manhattan: return "A Star Manhattan Heuristic";
   case search_bfs: return "Breadth First";
   case search_dfs: return "Depth First";
   case search_dijkstra: return "Dijkstras";
@@ -540,8 +572,13 @@ void Pathfinder::Render()
   }
 
   //display the total path cost if appropriate
-  if (m_CurrentAlgorithm == search_astar || m_CurrentAlgorithm == search_dijkstra)
+  if (m_CurrentAlgorithm == search_astar_euclidian || m_CurrentAlgorithm == search_astar_manhattan || m_CurrentAlgorithm == search_dijkstra)
   {
     gdi->TextAtPos(m_icxClient-110, m_icyClient + 3, "Cost is " + ttos(m_dCostToTarget));
   }
+}
+
+void Pathfinder::set_maxCost(double maxCost)
+{
+	m_maxCost = maxCost;
 }
